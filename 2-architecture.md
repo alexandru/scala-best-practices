@@ -1,6 +1,6 @@
 ## 2. Application Architecture
 
-<img src="https://raw.githubusercontent.com/monifu/scala-best-practices/master/assets/scala-logo-256.png"  align="right" style="z-index:1000" />
+<img src="https://raw.githubusercontent.com/monifu/scala-best-practices/master/assets/scala-logo-256.png"  align="right" width="128" height="128" />
 
 ### 2.1. SHOULD NOT use the Cake Pattern
 
