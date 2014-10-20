@@ -1,6 +1,6 @@
 # Scala Best Practices
 
-<img src="https://raw.githubusercontent.com/monifu/scala-best-practices/master/assets/scala-logo-256.png"  align="right" style="z-index:1000; float: right;" />
+<img src="https://raw.githubusercontent.com/monifu/scala-best-practices/master/assets/scala-logo-256.png"  align="right" width="256" height="256" />
 
 A collection of best practices, friendly to people that want to
 contribute.
