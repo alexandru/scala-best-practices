@@ -1,6 +1,6 @@
 # Scala Best Practices
 
-<img src="https://raw.githubusercontent.com/monifu/scala-best-practices/master/assets/scala-logo-256.png"  align="right" style="z-index:1000" />
+<img src="https://raw.githubusercontent.com/monifu/scala-best-practices/master/assets/scala-logo-256.png"  align="right" style="z-index:1000; float: right;" />
 
 A collection of best practices, friendly to people that want to
 contribute.
@@ -24,11 +24,11 @@ contribute.
   - [1.7. MUST NOT throw exceptions for validations of user input or flow control](1-general-advice.md#17-must-not-throw-exceptions-for-validations-of-user-input-or-flow-control)
   - [1.8. MUST NOT catch Throwable](1-general-advice.md#18-must-not-catch-throwable-when-catching-exceptions)
   - [1.9. MUST NOT use "null"](1-general-advice.md#19-must-not-use-null)
-  - [1.10. SHOULD NOT use Any or AnyRef or isInstanceOf / asInstanceOf](1-general-advice.md#111-should-not-use-any-or-anyref-or-isinstanceof--asinstanceof)
-  - [1.11. MUST NOT use Java's Date or Calendar, instead use Joda-Time](1-general-advice.md#110-must-not-use-javas-date-or-calendar-instead-use-joda-time)
+  - [1.10. MUST NOT use Java's Date or Calendar, instead use Joda-Time](1-general-advice.md#110-must-not-use-javas-date-or-calendar-instead-use-joda-time)
+  - [1.11. SHOULD NOT use Any or AnyRef or isInstanceOf / asInstanceOf](1-general-advice.md#111-should-not-use-any-or-anyref-or-isinstanceof--asinstanceof)
   - [1.12. MUST serialize dates as either Unix Timestamp or ISO 8601](1-general-advice.md#112-must-serialize-dates-as-either-unix-timestamp-or-as-iso-8601)
   - [1.13. MUST NOT use magic values](1-general-advice.md#113-must-not-use-magic-values)
-  - [1.14. SHOULD NOT use var as shared state](1-general-advice.md##114-should-not-use-var-as-shared-state)
+  - [1.14. SHOULD NOT use var as shared state](1-general-advice.md#114-should-not-use-var-as-shared-state)
 
 - [2. Application Architecture](2-architecture.md)
   - [2.1. SHOULD NOT use the Cake pattern](2-architecture.md#21-should-not-use-the-cake-pattern)
