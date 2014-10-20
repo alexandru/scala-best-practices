@@ -1,6 +1,6 @@
-<img src="https://raw.githubusercontent.com/monifu/scala-best-practices/master/assets/scala-logo-256.png"  align="right" style="z-index:1000" />
-
 ## 0. Preface
+
+<img src="https://raw.githubusercontent.com/monifu/scala-best-practices/master/assets/scala-logo-256.png"  align="right" style="z-index:1000" />
 
 What follows is a list of best practices I compiled for my colleagues,
 advice sprung from the painful experience coming naturally from
