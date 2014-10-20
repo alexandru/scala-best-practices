@@ -50,7 +50,7 @@ contribute.
 
 ## Contribute
 
-Submit a PR.
+Open an issue to make suggestions, or create a pull request ;-)
 
 ---
 
