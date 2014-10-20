@@ -1,6 +1,6 @@
 ## 1. General Advice
 
-<img src="https://raw.githubusercontent.com/monifu/scala-best-practices/master/assets/scala-logo-256.png"  align="right" style="z-index:1000" />
+<img src="https://raw.githubusercontent.com/monifu/scala-best-practices/master/assets/scala-logo-256.png"  align="right" width="128" height="128" />
 
 ### 1.1. MUST NOT use "return"
 
