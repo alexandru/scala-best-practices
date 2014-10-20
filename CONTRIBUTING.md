@@ -1,8 +1,9 @@
 # Contributing to this project
 
 [Monifu's Scala Best Practices](https://github.com/monifu/scala-best-practices)
-organization welcomes contributions from anybody wishing to
-participate.  All contributions must be licensed with [CC-BY 4.0](https://creativecommons.org/licenses/by/4.0/).
+welcomes contributions from anybody wishing to participate.  All
+contributions must be licensed with
+[CC-BY 4.0](https://creativecommons.org/licenses/by/4.0/).
 
 ## General Workflow
 
