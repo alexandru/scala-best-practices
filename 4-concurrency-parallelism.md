@@ -1,8 +1,8 @@
-## 3. Concurrency, Parallelism and Performance
+## 4. Concurrency and Parallelism
 
 <img src="https://raw.githubusercontent.com/monifu/scala-best-practices/master/assets/scala-logo-256.png"  align="right" width="128" height="128" />
 
-### 3.1. SHOULD avoid concurrency like the plague it is
+### 4.1. SHOULD avoid concurrency like the plague it is
 
 Avoid having to deal with concurrency as much as possible. People good
 at concurrency avoid it like the plague it is.
@@ -17,7 +17,7 @@ persisted in MySQL, that job can take longer than 1 minute to execute
 and thus you can end up with 2 or 3 processes executing at the same
 time and contending on the same MySQL table.
 
-### 3.2. SHOULD use appropriate abstractions only where suitable - Future, Actors, Rx
+### 4.2. SHOULD use appropriate abstractions only where suitable - Future, Actors, Rx
 
 Learn about the abstractions available and choose between them
 depending on the task at hand. There is no silver bullet that can be
@@ -99,7 +99,7 @@ Rx / Iteratees are bad because:
 So there you have it. Learn and pick wisely - don't apply abstractions
 like some sort of special sauce without thinking about it
 
-### 3.3. MUST NOT wrap purely CPU-bound operations in Futures
+### 4.3. MUST NOT wrap purely CPU-bound operations in Futures
 
 This is in general an anti-pattern:
 
@@ -114,7 +114,7 @@ which the requests are already paralellized and the above would get
 executed in response to requests, shoving purely CPU-bound in that
 Future constructor will make your logic slower to execute, not faster.
 
-### 3.4. MUST use Scala's BlockContext on blocking I/O
+### 4.4. MUST use Scala's BlockContext on blocking I/O
 
 This includes all blocking I/O, including SQL queries. Real sample:
 
@@ -132,7 +132,7 @@ what thread-pool gets affected and given the default configuration of
 the backend app, this can lead to non-deterministic dead-locks. It's a
 bug waiting to happen in production.
 
-Here's a simplified example demonstrating the issue for didactical purposes:
+Here's a simplified example demonstrating the issue for didactic purposes:
 
 ```scala
 implicit val ec = ExecutionContext
@@ -171,7 +171,7 @@ blocking {
 }
 ```
 
-### 3.5. SHOULD NOT block
+### 4.5. SHOULD NOT block
 
 Sometimes you have to block the thread underneath - unfortunately JDBC
 doesn't have a non-blocking API. However, when you have a choice,
@@ -196,7 +196,7 @@ fetchSomething.map(_.toUpperCase)
 Also checkout [Scala-Async](https://github.com/scala/async) to make
 this easier.
 
-### 3.6. All public APIs SHOULD BE thread-safe
+### 4.6. All public APIs SHOULD BE thread-safe
 
 As a general rule of software engineering on top of the JVM,
 absolutely all public APIs from inside your process will end up being
@@ -223,7 +223,7 @@ useless lock to have in a larger context. Remember, locks are not
 composable and are very error-prone. Never leave the responsibility of
 synchronizing for contention on your users.
 
-### 3.7. SHOULD avoid contention on shared reads
+### 4.7. SHOULD avoid contention on shared reads
 
 Meet
 [Amdahl's Law](https://en.wikipedia.org/wiki/Amdahl's_law). Synchronizing
@@ -239,34 +239,7 @@ Come up with better synchronization schemes that does not involve
 synchronizing reads, like atomic references or STM. If you aren't able
 to do that, then avoid this altogether by using proper abstractions.
 
-### 3.8. MUST evolve the state of actors only in response to messages received from the outside
-
-When using Akka actors, their mutable state should always evolve in
-response to messages received from the outside. An anti-pattern that
-comes up a lot is this:
-
-```scala
-class SomeActor extends Actor {
-  private var counter = 0
-  private val scheduler = context.system.scheduler
-    .schedule(3.seconds, 3.seconds, self, Tick)
-
-  def receive = {
-    case Tick =>
-      counter += 1
-  }
-}
-```
-
-In the example above the actor schedules a Tick every 3 seconds that
-evolves its state. This is an extremely costly mistake. The actor's
-behavior becomes totally non-deterministic and impossible to test
-right.
-
-If you really need to periodically do something inside an actor, then
-that scheduler must not be initialized inside the actor. Take it out.
-
-### 3.9. MUST provide a clearly defined and documented protocol for each component or actor that communicates over async boundaries
+### 4.8. MUST provide a clearly defined and documented protocol for each component or actor that communicates over async boundaries
 
 A function signature is not enough for documenting the protocol of
 problematic components. Especially when talking about communications
@@ -280,15 +253,7 @@ As a guideline, don't shy away from writing comments and document:
 - the proper ordering of calls
 - everything that can go wrong
 
-### 3.10. SHOULD avoid having mutable state in persistent actors
-
-If you keep mutable state inside your actors, it makes it harder to
-parallelize the workload - actors with a lot of mutable state in them
-tend to have problems with horizontal scalability. Always take
-horizontal scalability into account and ask yourself - is this
-scalable? Could multiple actors of this type run in parallel?
-
-### 3.11. SHOULD always prefer single-producer scenarios
+### 4.9. SHOULD always prefer single-producer scenarios
 
 Shared writes are not parallelizable, whereas shared reads are
 embarrassingly parallelizable. As a metaphor, 100,000 people can watch
@@ -301,75 +266,7 @@ pounding on the same resource, because Amdahl's Law.
 
 Checkout [LMAX Disruptor](https://lmax-exchange.github.io/disruptor/).
 
-### 3.12. MUST be mindful of the garbage collector and how unnecessary allocations can kill performance
-
-Don't over allocate resources, unless you need to. We want to avoid
-micro optimizations, but always be mindful about the effects
-allocations can have on your system.
-
-In the
-[words of Martin Thomson](http://www.infoq.com/presentations/top-10-performance-myths),
-if you stress the garbage collector, you'll increase the latency on
-stop-the-world freezes and the number of such occurrences, with the
-garbage collector acting like a GIL and thus limiting performance and
-vertical scalability.
-
-Example:
-
-```scala
-query.filter(_.someField.inSet(Set(name)))
-```
-
-This is a sample that occurred in our project due to a problem with
-Slick's API. So instead of a `===` test, the developer chose to do an
-`inSet` operation with a sequence of 1 element. This allocation of a
-collection of 1 element happens on every method call. Now that's not
-good, what can be avoided should be avoided.
-
-Another example:
-
-```scala
-someCollection
- .filter(x => Set(a,b,c).contains(x.id))
- .map(_.name)
-```
-
-First of all, this creates a Set every single time, on each element of
-our collection. Second of all, filter and map can be compressed in one
-operation, otherwise we end up with more garbage and more time spent
-building the final collection:
-
-```scala
-val validIDs = Set(a,b,c)
-
-someCollection.collect {
- case x if validIDs.contains(x.id) =>
-   x.name
-}
-```
-
-A generic example that often pops up, exemplifying useless traversals
-and operators that could be compressed:
-
-```scala
-collection.filter(bySomething).map(toSomethingElse).filter(again).headOption
-```
-
-Also, take notice of your requirements and use the data-structure
-suitable for your use-case. You want to build a stack? That's a
-`List`. You want to index a list? That's a `Vector`. You want to
-append to the end of a list? That's again a `Vector`. You want to push
-to the front and pull from the back? That's a `Queue`. You have a set
-of things and want to check for membership? That's a `Set`. You have a
-list of things that you want to keep ordered? That's a
-`SortedSet`. This isn't rocket science, just computer science 101.
-
-We are not talking about extreme micro optimizations here, we aren't
-even talking about something that's Scala, or FP, or JVM specific
-here, but be mindful of what you're doing and try to not do
-unnecessary allocations, as it's much harder fixing it later.
-
-### 3.13. MUST NOT hardcode the thread-pool / execution context
+### 4.10. MUST NOT hardcode the thread-pool / execution context
 
 This is a general design issue related to the project as a whole, but don't do this:
 

@@ -1,8 +1,8 @@
-## 1. General Advice
+## 2. Language Rules
 
 <img src="https://raw.githubusercontent.com/monifu/scala-best-practices/master/assets/scala-logo-256.png"  align="right" width="128" height="128" />
 
-### 1.1. MUST NOT use "return"
+### 2.1. MUST NOT use "return"
 
 The `return` statement from Java signals a side-effect - unwind the
 stack and give this value to the caller. In a language in which the
@@ -33,13 +33,13 @@ those gigantic methods with lots of if/else branches, the presence of
 a `return` is a clear signal that the code stinks, a magnet for future
 bugs and is thus in urgent need of refactoring.
 
-### 1.2. SHOULD use immutable data-structures
+### 2.2. SHOULD use immutable data-structures
 
 Immutable data-structures are facts that can be compared and reasoned
 about. Mutable things are error-prone buckets. You should never use a
 mutable data-structure unless you're able to defend it and there are
 really, really few places in which a mutable data-structure is
-defendable.
+defensible.
 
 Lets exemplify:
 
@@ -76,9 +76,9 @@ So there you have it - a public API exposing a mutable data-structure
 is an abomination of nature, leading to problems that can be worse
 than what happens when doing manual memory management.
 
-### 1.3. SHOULD NOT update a `var` using loops or conditions
+### 2.3. SHOULD NOT update a `var` using loops or conditions
 
-It's a mistake that most Java developpers do when they come to Scala. Example:
+It's a mistake that most Java developers do when they come to Scala. Example:
 
 ```scala
 var sum = 0
@@ -138,10 +138,10 @@ And you know, as soon as the branches get too complex, just as was said in the
 discussion on `return`, that's a sign that the *code smells* and is in need
 of refactoring, which is a good thing.
 
-### 1.4. SHOULD NOT define useless traits
+### 2.4. SHOULD NOT define useless traits
 
 There was this Java Best Practice that said "*program to an interface,
-not to an implementation*", a best practice that has been cargo-culted
+not to an implementation*", a best practice that has been cargo-cult-ed
 to the point that people started defining completely useless
 interfaces in their code. Generally speaking, that rule is healthy,
 but it refers to the general engineering need of hiding implementation
@@ -215,7 +215,7 @@ object AssetsObservable {
 See, I do not need to mock an entire `DBService` in order to test the
 above.
 
-### 1.5. MUST NOT use "var" inside a case class
+### 2.5. MUST NOT use "var" inside a case class
 
 Case classes are syntactic sugar for defining classes in which - all
 constructor arguments are public and immutable and thus part of the
@@ -238,7 +238,7 @@ not change according to the object's history). Case classes are for
 strictly immutable things. If you need to mutate stuff, don't use case
 classes.
 
-### 1.6. SHOULD NOT declare abstract "val" or "var" or "lazy val" members
+### 2.6. SHOULD NOT declare abstract "val" or "var" or "lazy val" members
 
 It's a bad practice to declare abstract vals or vars or lazy vals in
 abstract classes or traits. Do not do this:
@@ -292,7 +292,7 @@ otherwise decent way of fixing such a sample.
 There's no good reason to impose on inheritors the way a value should
 get initialized. `def` is generic so use `def` instead.
 
-### 1.7. MUST NOT Throw Exceptions for Validations of User Input or Flow Control
+### 2.7. MUST NOT Throw Exceptions for Validations of User Input or Flow Control
 
 Two reasons:
 
@@ -313,7 +313,7 @@ As an appeal to authority, it's reasonable to reference
 [Functional Programming with Scala](http://www.manning.com/bjarnason/),
 chapter 4.
 
-### 1.8. MUST NOT catch Throwable when catching Exceptions
+### 2.8. MUST NOT catch Throwable when catching Exceptions
 
 Never, never, never do this:
 
@@ -348,7 +348,7 @@ try {
 }
 ```
 
-### 1.9. MUST NOT use "null"
+### 2.9. MUST NOT use "null"
 
 You must avoid using `null`. Prefer Scala's `Option[T]` instead. Null
 values are error prone, because the compiler cannot protect
@@ -414,7 +414,7 @@ list.flatMap(x => Some(x).filter(_ % 2 == 0))
 Also, never, ever use `option.get`. That's just sloppy engineering and
 defeats the purpose of using Option.
 
-### 1.11. SHOULD NOT use Any or AnyRef or isInstanceOf / asInstanceOf
+### 2.11. SHOULD NOT use Any or AnyRef or isInstanceOf / asInstanceOf
 
 Avoid using Any or AnyRef or explicit casting, unless you've got a
 really good reason for it. Scala is a language that derives value from
@@ -435,7 +435,7 @@ else
 
 Often we are using Any when doing deserialization. Instead of working
 with Any, think about the generic type you want and the set of
-subtypes you need, and come up with an Algebraic Data-Type:
+sub-types you need, and come up with an Algebraic Data-Type:
 
 ```scala
 sealed trait JsValue
@@ -461,7 +461,7 @@ json match {
 }
 ```
 
-### 1.10. MUST NOT use Java's Date or Calendar, instead use Joda-Time
+### 2.10. MUST NOT use Java's Date or Calendar, instead use Joda-Time
 
 Java's Date and Time classes from the standard library are awful
 because:
@@ -474,7 +474,7 @@ because:
 
 Always use Joda-Time.
 
-### 1.12. MUST serialize dates as either Unix timestamp, or as ISO 8601
+### 2.12. MUST serialize dates as either Unix timestamp, or as ISO 8601
 
 Unix timestamps, provided that we are talking about the number of
 seconds or milliseconds since 1970-01-01 00:00:00 UTC (with emphasis
@@ -485,7 +485,7 @@ is a decent serialization format supported by most libraries.
 Avoid anything else and also when storing dates without a timezone
 attached (like in MySQL), always express that info in UTC.
 
-### 1.13. MUST NOT use magic values
+### 2.13. MUST NOT use magic values
 
 Although not uncommon in other languages to use "magic" (special)
 values like `-1` to signal particular outcomes, in Scala there are a
@@ -500,7 +500,7 @@ Don't do this:
 val index = list.find(someTest).getOrElse(-1)
 ```
 
-### 1.14. SHOULD NOT use "var" as shared state
+### 2.14. SHOULD NOT use "var" as shared state
 
 Avoid using "var" at least when speaking about shared mutable
 state. Because if you do have shared state expressed as vars, you'd
@@ -532,3 +532,71 @@ Yes, it introduces overhead due to the synchronization required, which
 in the case of an atomic reference means spin loops. But it will save
 you from lots and lots of headaches later. And it's best to avoid
 mutation entirely.
+
+### 2.15. MUST be mindful of the garbage collector
+
+Don't over allocate resources, unless you need to. We want to avoid
+micro optimizations, but always be mindful about the effects
+allocations can have on your system.
+
+In the
+[words of Martin Thomson](http://www.infoq.com/presentations/top-10-performance-myths),
+if you stress the garbage collector, you'll increase the latency on
+stop-the-world freezes and the number of such occurrences, with the
+garbage collector acting like a GIL and thus limiting performance and
+vertical scalability.
+
+Example:
+
+```scala
+query.filter(_.someField.inSet(Set(name)))
+```
+
+This is a sample that occurred in our project due to a problem with
+Slick's API. So instead of a `===` test, the developer chose to do an
+`inSet` operation with a sequence of 1 element. This allocation of a
+collection of 1 element happens on every method call. Now that's not
+good, what can be avoided should be avoided.
+
+Another example:
+
+```scala
+someCollection
+ .filter(x => Set(a,b,c).contains(x.id))
+ .map(_.name)
+```
+
+First of all, this creates a Set every single time, on each element of
+our collection. Second of all, filter and map can be compressed in one
+operation, otherwise we end up with more garbage and more time spent
+building the final collection:
+
+```scala
+val validIDs = Set(a,b,c)
+
+someCollection.collect {
+ case x if validIDs.contains(x.id) =>
+   x.name
+}
+```
+
+A generic example that often pops up, exemplifying useless traversals
+and operators that could be compressed:
+
+```scala
+collection.filter(bySomething).map(toSomethingElse).filter(again).headOption
+```
+
+Also, take notice of your requirements and use the data-structure
+suitable for your use-case. You want to build a stack? That's a
+`List`. You want to index a list? That's a `Vector`. You want to
+append to the end of a list? That's again a `Vector`. You want to push
+to the front and pull from the back? That's a `Queue`. You have a set
+of things and want to check for membership? That's a `Set`. You have a
+list of things that you want to keep ordered? That's a
+`SortedSet`. This isn't rocket science, just computer science 101.
+
+We are not talking about extreme micro optimizations here, we aren't
+even talking about something that's Scala, or FP, or JVM specific
+here, but be mindful of what you're doing and try to not do
+unnecessary allocations, as it's much harder fixing it later.
