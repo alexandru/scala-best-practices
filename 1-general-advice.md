@@ -1,4 +1,4 @@
-<img src="https://raw.githubusercontent.com/monifu/scala-best-practices/master/assets/scala-logo-256.png"  align="right" />
+<img src="https://raw.githubusercontent.com/monifu/scala-best-practices/master/assets/scala-logo-256.png"  align="right" style="z-index:1000" />
 
 ## 1. General Advice
 
