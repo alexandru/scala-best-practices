@@ -109,7 +109,7 @@ Now placing those parameters on their own line is awful, no matter how you deal 
       param3, 
       param4).map(x => transform(x))
 
-    / awful because it breaks the logical flow 
+    // awful because it breaks the logical flow 
     val result = service.something(
       param1, 
       param2, 
