@@ -562,7 +562,7 @@ Another example:
 
 ```scala
 someCollection
- .filter(x => Set(a,b,c).contains(x.id))
+ .filter(Set(a,b,c).contains)
  .map(_.name)
 ```
 
@@ -574,10 +574,7 @@ building the final collection:
 ```scala
 val validIDs = Set(a,b,c)
 
-someCollection.collect {
- case x if validIDs.contains(x.id) =>
-   x.name
-}
+someCollection.filter(validIDs.contains).map(_.name)
 ```
 
 A generic example that often pops up, exemplifying useless traversals
