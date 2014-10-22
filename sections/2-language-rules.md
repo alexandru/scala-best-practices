@@ -238,6 +238,12 @@ not change according to the object's history). Case classes are for
 strictly immutable things. If you need to mutate stuff, don't use case
 classes.
 
+In the approximate words of Fogus in "The Joy of Clojure" or Baker in
+his paper from 1993: if any two mutable objects resolve as being equal
+now, then there’s no guarantee that they will a moment from now. And
+if two objects aren’t equal forever, then they’re technically never
+equal ;-)
+
 ### 2.6. SHOULD NOT declare abstract "val" or "var" or "lazy val" members
 
 It's a bad practice to declare abstract vals or vars or lazy vals in
