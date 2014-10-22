@@ -5,8 +5,8 @@
 A collection of best practices, friendly to people that want to
 contribute.
 
-- Version: `0.2`
-- Updated at: `2014-10-21`
+- Version: `0.3`
+- Updated at: `2014-10-23`
 
 ## Table of Contents
 
