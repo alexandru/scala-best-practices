@@ -56,7 +56,7 @@ contribute.
   - [4.11. MUST NOT hard-code the thread-pool / execution context](sections/4-concurrency-parallelism.md#411-must-not-hardcode-the-thread-pool--execution-context)
 
 - [5. Akka Actors](sections/5-actors.md)
-  - [5.1. MUST evolve the state of actors only in response to messages received from the outside](sections/5-actors.md#51-must-evolve-the-state-of-actors-only-in-response-to-messages-received-from-the-outside)
+  - [5.1. SHOULD evolve the state of actors only in response to messages received from the outside](sections/5-actors.md#51-should-evolve-the-state-of-actors-only-in-response-to-messages-received-from-the-outside)
   - [5.2. SHOULD mutate state in actors only with "context.become"](sections/5-actors.md#52-should-mutate-state-in-actors-only-with-contextbecome)
   - [5.3. MUST NOT leak the internal state of an actor in asynchronous closures](sections/5-actors.md#53-must-not-leak-the-internal-state-of-an-actor-in-asynchronous-closures)
   - [5.4. SHOULD do back-pressure](sections/5-actors.md#54-should-do-back-pressure)
