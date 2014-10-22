@@ -39,8 +39,8 @@ contribute.
 - [3. Application Architecture](sections/3-architecture.md)
   - [3.1. SHOULD NOT use the Cake pattern](sections/3-architecture.md#31-should-not-use-the-cake-pattern)
   - [3.2. MUST NOT put things in Play's Global](sections/3-architecture.md#32-must-not-put-things-in-plays-global)
-  - [3.3. SHOULD NOT apply optimizations without profiling](2-language-rules.md#33-should-not-apply-optimizations-without-profiling)
-  - [3.4. SHOULD be mindful of the garbage collector](sections/2-language-rules.md#34-should-be-mindful-of-the-garbage-collector)
+  - [3.3. SHOULD NOT apply optimizations without profiling](sections/3-architecture.md#33-should-not-apply-optimizations-without-profiling)
+  - [3.4. SHOULD be mindful of the garbage collector](sections/3-architecture.md#34-should-be-mindful-of-the-garbage-collector)
 
 - [4. Concurrency and Parallelism](sections/4-concurrency-parallelism.md)
   - [4.1. SHOULD avoid concurrency like the plague it is](sections/4-concurrency-parallelism.md#41-should-avoid-concurrency-like-the-plague-it-is)
