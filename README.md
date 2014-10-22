@@ -48,7 +48,7 @@ contribute.
   - [4.3. MUST NOT wrap purely CPU-bound operations in Futures](sections/4-concurrency-parallelism.md#43-must-not-wrap-purely-cpu-bound-operations-in-futures)
   - [4.4. MUST use Scala's BlockContext on blocking I/O](sections/4-concurrency-parallelism.md#44-must-use-scalas-blockcontext-on-blocking-io)
   - [4.5. SHOULD NOT block](sections/4-concurrency-parallelism.md#45-should-not-block)
-  - [4.6. SHOULD use a separate thread-pool for blocking I/O](sections/4-concurrency-parallelism.md#46-should-use-a-separate-thread-pool-for-blocking-i-o)
+  - [4.6. SHOULD use a separate thread-pool for blocking I/O](4-concurrency-parallelism.md#46-should-use-a-separate-thread-pool-for-blocking-io)
   - [4.7. All public APIs SHOULD BE thread-safe](sections/4-concurrency-parallelism.md#47-all-public-apis-should-be-thread-safe)
   - [4.8. SHOULD avoid contention on shared reads](sections/4-concurrency-parallelism.md#48-should-avoid-contention-on-shared-reads)
   - [4.9. MUST provide a clearly defined and documented protocol for each component or actor that communicates over async boundaries](sections/4-concurrency-parallelism.md#49-must-provide-a-clearly-defined-and-documented-protocol-for-each-component-or-actor-that-communicates-over-async-boundaries)
