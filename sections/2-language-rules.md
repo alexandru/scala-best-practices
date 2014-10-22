@@ -461,18 +461,23 @@ json match {
 }
 ```
 
-### 2.10. MUST NOT use Java's Date or Calendar, instead use Joda-Time
+### 2.10. MUST NOT use Java's Date or Calendar, instead use Joda-Time or JSR-310
 
-Java's Date and Time classes from the standard library are awful
+Java's Date and Calendar classes from the standard library are awful
 because:
 
-1. resulting objects are mutable, which doesn't make sense for expressing a date
+1. resulting objects are mutable, which doesn't make sense for
+   expressing a date, which should be a value (how would you feel if
+   you had to work with StringBuffer everywhere you have Strings?)
 2. months numbering is zero based
 3. Date in particular does not keep timezone info, so Date values are completely useless
 4. it doesn't make a difference between GMT and UTC
 5. years are expressed as 2 digits instead of 4
 
-Always use Joda-Time.
+Always use [Joda-Time](http://www.joda.org/joda-time/) - of if you can
+afford to switch to Java 8, there's a shinny new
+[JSR-310](http://www.threeten.org/) that's based on Joda-Time and that
+will be the new standard once people adopt Java 8.
 
 ### 2.12. MUST serialize dates as either Unix timestamp, or as ISO 8601
 
