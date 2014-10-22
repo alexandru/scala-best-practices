@@ -538,7 +538,40 @@ in the case of an atomic reference means spin loops. But it will save
 you from lots and lots of headaches later. And it's best to avoid
 mutation entirely.
 
-### 2.15. MUST be mindful of the garbage collector
+### 2.15. SHOULD NOT apply optimizations without profiling
+
+Profiling is a prerequisite for doing optimizations. Never work on
+optimizations, unless through profiling you discover the actual
+bottlenecks.
+
+This is because our intuition about how the system behaves often fails
+us and multiple effects could happen by applying optimizations without
+having hard numbers:
+
+- you could complicate the code or the architecture, thus making it
+  harder to apply later optimizations globally
+- your work could be in vain or it could actually lead to more
+  performance degradation
+
+Multiple strategies available and you should preferably do all of
+them:
+
+- a good profiler can tell you about bottlenecks that aren't obvious,
+  my favorite being YourKit Profiler, but Oracle's VisualVM is free
+  and often good enough
+- collect metrics from the running production systems, by means of a
+  library such as
+  [Dropwizard Metrics](https://dropwizard.github.io/metrics/3.1.0/)
+  and push them in something like
+  [Graphite](http://graphite.wikidot.com/), a strategy that can lead
+  you in the right direction
+- compare solutions by writing benchmarking code, but note that
+  benchmarking is not easy and you should at least use a library like
+  [Google Caliper](https://code.google.com/p/caliper/)
+
+Overall - measure, don't guess.
+
+### 2.16. SHOULD be mindful of the garbage collector
 
 Don't over allocate resources, unless you need to. We want to avoid
 micro optimizations, but always be mindful about the effects
@@ -588,7 +621,11 @@ A generic example that often pops up, exemplifying useless traversals
 and operators that could be compressed:
 
 ```scala
-collection.filter(bySomething).map(toSomethingElse).filter(again).headOption
+collection
+  .filter(bySomething)
+  .map(toSomethingElse)
+  .filter(again)
+  .headOption
 ```
 
 Also, take notice of your requirements and use the data-structure
@@ -604,3 +641,12 @@ We are not talking about extreme micro optimizations here, we aren't
 even talking about something that's Scala, or FP, or JVM specific
 here, but be mindful of what you're doing and try to not do
 unnecessary allocations, as it's much harder fixing it later.
+
+BTW, there is an obvious solution for keeping expressiveness while
+doing filtering and mapping - lazy collections, which in Scala means
+[Stream](http://www.scala-lang.org/api/current/index.html#scala.collection.immutable.Stream)
+if you need memoization or
+[Iterable](http://docs.oracle.com/javase/7/docs/api/java/lang/Iterable.html)
+if you don't need memoization.
+
+Also, make sure to read the rule on profiling.
