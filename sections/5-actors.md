@@ -2,7 +2,7 @@
 
 <img src="https://raw.githubusercontent.com/monifu/scala-best-practices/master/assets/scala-logo-256.png"  align="right" width="128" height="128" />
 
-### 5.1. MUST evolve the state of actors only in response to messages received from the outside
+### 5.1. SHOULD evolve the state of actors only in response to messages received from the outside
 
 When using Akka actors, their mutable state should always evolve in
 response to messages received from the outside. An anti-pattern that
