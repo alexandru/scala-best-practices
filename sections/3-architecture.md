@@ -154,4 +154,6 @@ if you need memoization or
 [Iterable](http://docs.oracle.com/javase/7/docs/api/java/lang/Iterable.html)
 if you don't need memoization.
 
-Also, make sure to read the rule on profiling.
+Also, make sure to read the
+[Rule 3.3](#33-should-not-apply-optimizations-without-profiling) on
+profiling.
