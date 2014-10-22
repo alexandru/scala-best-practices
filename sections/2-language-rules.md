@@ -562,7 +562,7 @@ Another example:
 
 ```scala
 someCollection
- .filter(x => Set(a,b,c).contains(x.id))
+ .filter(Set(a,b,c).contains)
  .map(_.name)
 ```
 
@@ -572,11 +572,10 @@ operation, otherwise we end up with more garbage and more time spent
 building the final collection:
 
 ```scala
-val validIDs = Set(a,b,c)
+val isIDValid = Set(a,b,c)
 
 someCollection.collect {
- case x if validIDs.contains(x.id) =>
-   x.name
+  case x if isIDValid(x) => x.name
 }
 ```
 
