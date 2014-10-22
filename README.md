@@ -35,7 +35,8 @@ contribute.
   - [2.12. MUST serialize dates as either Unix Timestamp or ISO 8601](sections/2-language-rules.md#212-must-serialize-dates-as-either-unix-timestamp-or-as-iso-8601)
   - [2.13. MUST NOT use magic values](sections/2-language-rules.md#213-must-not-use-magic-values)
   - [2.14. SHOULD NOT use "var" as shared state](sections/2-language-rules.md#214-should-not-use-var-as-shared-state)
-  - [2.15. MUST be mindful of the garbage collector](sections/2-language-rules.md#215-must-be-mindful-of-the-garbage-collector)
+  - [2.15. SHOULD be mindful of the garbage collector](sections/2-language-rules.md#215-should-be-mindful-of-the-garbage-collector)
+  - [2.16. SHOULD NOT apply optimizations without profiling](sections/2-language-rules.md#216-should-not-apply-optimizations-without-profiling)
 
 - [3. Application Architecture](sections/3-architecture.md)
   - [3.1. SHOULD NOT use the Cake pattern](sections/3-architecture.md#31-should-not-use-the-cake-pattern)
