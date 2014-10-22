@@ -161,7 +161,8 @@ happens, such that the `ExecutionContext` can decide what to do about
 it, such as adding more threads to the thread-pool (which is what
 Scala's ForkJoin thread-pool does).
 
-All the code has to be reviewed and whenever a blocking call happens, this is the fix:
+All the code has to be reviewed and whenever a blocking call happens,
+this is the fix:
 
 ```scala
 import scala.concurrent.blocking
@@ -170,6 +171,10 @@ blocking {
   someBlockingCallHere()
 }
 ```
+
+NOTE: the `blocking` call also serves as documentation, even if the
+underlying thread-pool doesn't support `BlockContext`, as things that
+block are totally non-obvious.
 
 ### 4.5. SHOULD NOT block
 
@@ -196,7 +201,68 @@ fetchSomething.map(_.toUpperCase)
 Also checkout [Scala-Async](https://github.com/scala/async) to make
 this easier.
 
-### 4.6. All public APIs SHOULD BE thread-safe
+### 4.6. SHOULD use a separate thread-pool for blocking I/O
+
+Related to
+[Rule 4.4](#44-must-use-scalas-blockcontext-on-blocking-io), if you're
+doing a lot of blocking I/O (e.g. a lot of calls to JDBC), it's better
+to create a second thread-pool / execution context and execute all
+blocking calls on that, leaving the application's thread-pool to deal
+with CPU-bound stuff.
+
+So you could do initialize this second execution context like:
+
+```scala
+import java.util.concurrent.Executors
+
+// ...
+private val ioThreadPool = Executors.newCachedThreadPool(
+  new ThreadFactory {
+    private val counter = new AtomicLong(0L)
+
+    def newThread(r: Runnable) = {
+      val th = new Thread(r)
+      th.setName("eon-io-thread-" +
+      counter.getAndIncrement.toString)
+      th.setDaemon(true)
+      th
+    }
+  })
+```
+
+Note that here I prefer to use an unbounded "cached thread-pool", so
+it doesn't have a limit. When doing blocking I/O the idea is that
+you've got to have enough threads that you can block. But if unbounded
+is too much, depending on use-case, you can later fine-tune it, the
+idea with this sample being that you get the ball rolling.
+
+And then you could provide a helper, like:
+
+```scala
+def executeBlockingIO[T](cb: => T): Future[T] = {
+  val p = Promise[T]()
+
+  ioThreadPool.execute(new Runnable {
+    def run() = try {
+      p.success(blocking(cb))
+    }
+    catch {
+      case NonFatal(ex) =>
+        logger.error(s"Uncaught I/O exception", ex)
+        p.failure(ex)
+    }
+  })
+
+  p.future
+}
+```
+
+Also, don't expose this I/O thread-pool as an execution context that
+can be imported as an implicit in scope, because then people would
+start using it for CPU-bound stuff by mistake, so it's better to hide
+it and provide this helper.
+
+### 4.7. All public APIs SHOULD BE thread-safe
 
 As a general rule of software engineering on top of the JVM,
 absolutely all public APIs from inside your process will end up being
@@ -223,7 +289,7 @@ useless lock to have in a larger context. Remember, locks are not
 composable and are very error-prone. Never leave the responsibility of
 synchronizing for contention on your users.
 
-### 4.7. SHOULD avoid contention on shared reads
+### 4.8. SHOULD avoid contention on shared reads
 
 Meet
 [Amdahl's Law](https://en.wikipedia.org/wiki/Amdahl's_law). Synchronizing
@@ -239,7 +305,7 @@ Come up with better synchronization schemes that does not involve
 synchronizing reads, like atomic references or STM. If you aren't able
 to do that, then avoid this altogether by using proper abstractions.
 
-### 4.8. MUST provide a clearly defined and documented protocol for each component or actor that communicates over async boundaries
+### 4.9. MUST provide a clearly defined and documented protocol for each component or actor that communicates over async boundaries
 
 A function signature is not enough for documenting the protocol of
 problematic components. Especially when talking about communications
@@ -253,7 +319,7 @@ As a guideline, don't shy away from writing comments and document:
 - the proper ordering of calls
 - everything that can go wrong
 
-### 4.9. SHOULD always prefer single-producer scenarios
+### 4.10. SHOULD always prefer single-producer scenarios
 
 Shared writes are not parallelizable, whereas shared reads are
 embarrassingly parallelizable. As a metaphor, 100,000 people can watch
@@ -266,7 +332,7 @@ pounding on the same resource, because Amdahl's Law.
 
 Checkout [LMAX Disruptor](https://lmax-exchange.github.io/disruptor/).
 
-### 4.10. MUST NOT hardcode the thread-pool / execution context
+### 4.11. MUST NOT hardcode the thread-pool / execution context
 
 This is a general design issue related to the project as a whole, but don't do this:
 
