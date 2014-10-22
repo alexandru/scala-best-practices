@@ -572,9 +572,11 @@ operation, otherwise we end up with more garbage and more time spent
 building the final collection:
 
 ```scala
-val validIDs = Set(a,b,c)
+val isIDValid = Set(a,b,c)
 
-someCollection.filter(validIDs.contains).map(_.name)
+someCollection.collect {
+  case x if isIDValid(x) => x.name
+}
 ```
 
 A generic example that often pops up, exemplifying useless traversals

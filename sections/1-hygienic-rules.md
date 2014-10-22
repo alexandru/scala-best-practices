@@ -69,8 +69,8 @@ plugin supposed to break it? Lets talk about this line (real code):
 In most cases, a plugin will just do truncation and I've seen a lot of these in practice:
 
 ```scala
-    val dp = new DispatchPlan(Set(filteredAssets),
-      start = startDate, end = endDate, product, scheduleMap, availabilityMap,
+    val dp = new DispatchPlan(Set(filteredAssets), start =
+      startDate, end = endDate, product, scheduleMap, availabilityMap,
       Set(activationIntervals), contractRepository, priceRepository)
 ```
 
