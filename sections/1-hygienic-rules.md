@@ -69,8 +69,8 @@ plugin supposed to break it? Lets talk about this line (real code):
 In most cases, a plugin will just do truncation and I've seen a lot of these in practice:
 
 ```scala
-    val dp = new DispatchPlan(Set(filteredAssets), start = 
-      startDate, end = endDate, product, scheduleMap, availabilityMap, 
+    val dp = new DispatchPlan(Set(filteredAssets), start =
+      startDate, end = endDate, product, scheduleMap, availabilityMap,
       Set(activationIntervals), contractRepository, priceRepository)
 ```
 
@@ -80,14 +80,14 @@ relying on plugins to work. We could also have this version:
 
 ```scala
     val dp = new DispatchPlan(
-      Set(filteredAssets), 
-      startDate, 
-      endDate, 
-      product, 
-      scheduleMap, 
-      availabilityMap, 
+      Set(filteredAssets),
+      startDate,
+      endDate,
+      product,
+      scheduleMap,
+      availabilityMap,
       Set(activationIntervals),
-      contractRepository, 
+      contractRepository,
       priceRepository
     )
 ```
@@ -96,7 +96,7 @@ Looks much better. But truth is, this isn't so good in other
 instances. Like say we've got a line that we want to break:
 
 ```scala
-   val result = service.something(param1, param2, param3, param4).map(x => transform(x))
+   val result = service.something(param1, param2, param3, param4).map(transform)
 ```
 
 Now placing those parameters on their own line is awful, no matter how you deal with it:
@@ -104,18 +104,18 @@ Now placing those parameters on their own line is awful, no matter how you deal 
 ```scala
     // awful because that transform call is not visible
     val result = service.something(
-      param1, 
-      param2, 
-      param3, 
-      param4).map(x => transform(x))
+      param1,
+      param2,
+      param3,
+      param4).map(transform)
 
-    / awful because it breaks the logical flow 
+    // awful because it breaks the logical flow
     val result = service.something(
-      param1, 
-      param2, 
-      param3, 
+      param1,
+      param2,
+      param3,
       param4
-    ).map(x => transform(x))
+    ).map(transform)
 ```
 
 This would be much better:
@@ -123,7 +123,7 @@ This would be much better:
 ```scala
     val result = service
       .something(param1, param2, param3, param4)
-      .map(x => transform(x))
+      .map(transform)
 ```
 
 Now that's better, isn't it? Of course, sometimes that call is so long
@@ -132,18 +132,18 @@ of some sort, e.g...
 
 ```scala
     val result = {
-      val instance = 
+      val instance =
         object.something(
-          myAwesomeParam1, 
-          otherParam2, 
-          someSeriousParam3, 
+          myAwesomeParam1,
+          otherParam2,
+          someSeriousParam3,
           anEvenMoreSoParam4,
           lonelyParam5,
           catchSomeFn6,
           startDate7
         )
 
-      for (x <- instance) yield 
+      for (x <- instance) yield
         transform(x)
     }
 ```
@@ -237,5 +237,3 @@ thing - absolutely nothing. It also increases visual clutter, as more
 words is more text to read and meaningless words are just noise.
 
 Properly chosen descriptive names - good. Bullshit names - bad.
-
-
