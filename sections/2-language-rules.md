@@ -417,10 +417,54 @@ list.flatMap(x => Some(x).filter(_ % 2 == 0))
 // => 2,4,6
 ```
 
-Also, never, ever use `option.get`. That's just sloppy engineering and
-defeats the purpose of using Option.
+### 2.10. MUST NOT use `Option.get`
 
-### 2.11. SHOULD NOT use Any or AnyRef or isInstanceOf / asInstanceOf
+You might be tempted to do this:
+
+```scala
+val someValue: Option[Double] = ???
+
+// ....
+val result = someValue.get + 1
+```
+
+Don't ever do that, since your trading a `NullPointerException` for a
+`NoSuchElementException` and that defeats the purpose of using
+`Option` in the first place.
+
+Alternatives:
+
+1. using `Option.getOrElse`
+2. using `Option.fold`
+3. using pattern matching and dealing with the `None` branch explicitly
+4. not taking the value out of its optional context
+
+As an example for (4), not taking the value out of its context means
+this:
+
+```scala
+val result = someValue.map(_ + 1)
+```
+
+### 2.11. MUST NOT use Java's Date or Calendar, instead use Joda-Time or JSR-310
+
+Java's Date and Calendar classes from the standard library are awful
+because:
+
+1. resulting objects are mutable, which doesn't make sense for
+   expressing a date, which should be a value (how would you feel if
+   you had to work with StringBuffer everywhere you have Strings?)
+2. months numbering is zero based
+3. Date in particular does not keep timezone info, so Date values are completely useless
+4. it doesn't make a difference between GMT and UTC
+5. years are expressed as 2 digits instead of 4
+
+Always use [Joda-Time](http://www.joda.org/joda-time/) - of if you can
+afford to switch to Java 8, there's a shinny new
+[JSR-310](http://www.threeten.org/) that's based on Joda-Time and that
+will be the new standard once people adopt Java 8.
+
+### 2.12. SHOULD NOT use Any or AnyRef or isInstanceOf / asInstanceOf
 
 Avoid using Any or AnyRef or explicit casting, unless you've got a
 really good reason for it. Scala is a language that derives value from
@@ -467,25 +511,7 @@ json match {
 }
 ```
 
-### 2.10. MUST NOT use Java's Date or Calendar, instead use Joda-Time or JSR-310
-
-Java's Date and Calendar classes from the standard library are awful
-because:
-
-1. resulting objects are mutable, which doesn't make sense for
-   expressing a date, which should be a value (how would you feel if
-   you had to work with StringBuffer everywhere you have Strings?)
-2. months numbering is zero based
-3. Date in particular does not keep timezone info, so Date values are completely useless
-4. it doesn't make a difference between GMT and UTC
-5. years are expressed as 2 digits instead of 4
-
-Always use [Joda-Time](http://www.joda.org/joda-time/) - of if you can
-afford to switch to Java 8, there's a shinny new
-[JSR-310](http://www.threeten.org/) that's based on Joda-Time and that
-will be the new standard once people adopt Java 8.
-
-### 2.12. MUST serialize dates as either Unix timestamp, or as ISO 8601
+### 2.13. MUST serialize dates as either Unix timestamp, or as ISO 8601
 
 Unix timestamps, provided that we are talking about the number of
 seconds or milliseconds since 1970-01-01 00:00:00 UTC (with emphasis
@@ -496,7 +522,7 @@ is a decent serialization format supported by most libraries.
 Avoid anything else and also when storing dates without a timezone
 attached (like in MySQL), always express that info in UTC.
 
-### 2.13. MUST NOT use magic values
+### 2.14. MUST NOT use magic values
 
 Although not uncommon in other languages to use "magic" (special)
 values like `-1` to signal particular outcomes, in Scala there are a
@@ -511,7 +537,7 @@ Don't do this:
 val index = list.find(someTest).getOrElse(-1)
 ```
 
-### 2.14. SHOULD NOT use "var" as shared state
+### 2.15. SHOULD NOT use "var" as shared state
 
 Avoid using "var" at least when speaking about shared mutable
 state. Because if you do have shared state expressed as vars, you'd
@@ -544,3 +570,45 @@ in the case of an atomic reference means spin loops. But it will save
 you from lots and lots of headaches later. And it's best to avoid
 mutation entirely.
 
+### 2.16. Public functions SHOULD have an explicit return type
+
+Prefer this:
+
+```scala
+def someFunction(param1: T1, param2: T2): Result = {
+  ???
+}
+```
+
+To this:
+
+```scala
+def someFunction(param1: T1, param2: T2) = {
+  ???
+}
+```
+
+Yeah, type inference on the result of a function is great and all, but
+for public methods:
+
+1. it's not OK to rely on an IDE or to inspect the implementation in
+   order to see the returned type
+2. Scala currently infers the most specialized type possible, because
+   in Scala the return type on functions is covariant, so you might
+   actually get a really ugly type back
+
+For example, what is the returned type of this function:
+
+```scala
+def sayHelloRunnable(name: String) = new Runnable {
+  def sayIt() = println(s"Hello, $name")
+  def run() = sayIt()
+}
+```
+
+Do you think it's `Runnable`?
+Wrong, it's `Runnable{def sayIt(): Unit}`.
+
+As a side-effect, this also decreases compilation times, as whenever
+`sayHelloRunnable` changes implementation, it also changes the
+signature so everything that depends on it must be recompiled.
