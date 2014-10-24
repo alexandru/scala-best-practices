@@ -47,10 +47,9 @@ class MyActor extends Actor {
   }
 }
 
-object MyActor {
-  case class Add(key: String)
-  case class Contains(key: String)
-}
+// Messages
+case class Add(key: String)
+case class Contains(key: String)
 ```
 
 Since we are using Scala, we want to be as pure as practically
@@ -139,10 +138,9 @@ class MyActor extends Actor {
   def validate(key: String): Future[Boolean] = ???
 }
 
-object MyActor {
-  case class Add(key: String)
-  caes class Validated(key: String, isValid: Boolean)
-}
+// Messages
+case class Add(key: String)
+case class Validated(key: String, isValid: Boolean)
 ```
 
 And of course, we could be modeling a state-machine that doesn't
@@ -180,12 +178,12 @@ class MyActor extends Actor {
   def validate(key: String): Future[Boolean] = ???
 }
 
-object MyActor {
-  case class Add(key: String)
-  case class Validated(key: String, isValid: Boolean)
-  case object Continue
-  case object Rejected
-}
+// Messages
+
+case class Add(key: String)
+case class Validated(key: String, isValid: Boolean)
+case object Continue
+case object Rejected
 ```
 
 Yeap, actor-based designs can get tricky.
