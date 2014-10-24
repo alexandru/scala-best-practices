@@ -5,8 +5,8 @@
 A collection of best practices, friendly to people that want to
 contribute.
 
-- Version: `0.3`
-- Updated at: `2014-10-23`
+- Version: `0.4`
+- Updated at: `2014-10-24`
 
 ## Table of Contents
 
@@ -30,7 +30,7 @@ contribute.
   - [2.7. MUST NOT throw exceptions for validations of user input or flow control](sections/2-language-rules.md#27-must-not-throw-exceptions-for-validations-of-user-input-or-flow-control)
   - [2.8. MUST NOT catch Throwable](sections/2-language-rules.md#28-must-not-catch-throwable-when-catching-exceptions)
   - [2.9. MUST NOT use "null"](sections/2-language-rules.md#29-must-not-use-null)
-  - [2.10. MUST NOT use "Option.get"](sections/2-language-rules.md#210-must-not-use-option-get)
+  - [2.10. MUST NOT use "Option.get"](sections/2-language-rules.md#210-must-not-use-optionget)
   - [2.11. MUST NOT use Java's Date or Calendar, instead use Joda-Time or JSR-310](sections/2-language-rules.md#211-must-not-use-javas-date-or-calendar-instead-use-joda-time-or-jsr-310)
   - [2.12. SHOULD NOT use Any or AnyRef or isInstanceOf / asInstanceOf](sections/2-language-rules.md#212-should-not-use-any-or-anyref-or-isinstanceof--asinstanceof)
   - [2.13. MUST serialize dates as either Unix Timestamp or ISO 8601](sections/2-language-rules.md#213-must-serialize-dates-as-either-unix-timestamp-or-as-iso-8601)
@@ -47,7 +47,7 @@ contribute.
 - [4. Concurrency and Parallelism](sections/4-concurrency-parallelism.md)
   - [4.1. SHOULD avoid concurrency like the plague it is](sections/4-concurrency-parallelism.md#41-should-avoid-concurrency-like-the-plague-it-is)
   - [4.2. SHOULD use appropriate abstractions only where suitable](sections/4-concurrency-parallelism.md#42-should-use-appropriate-abstractions-only-where-suitable---future-actors-rx)
-  - [4.3. MUST NOT wrap purely CPU-bound operations in Futures](sections/4-concurrency-parallelism.md#43-must-not-wrap-purely-cpu-bound-operations-in-futures)
+  - [4.3. SHOULD NOT wrap purely CPU-bound operations in Futures](sections/4-concurrency-parallelism.md#43-should-not-wrap-purely-cpu-bound-operations-in-futures)
   - [4.4. MUST use Scala's BlockContext on blocking I/O](sections/4-concurrency-parallelism.md#44-must-use-scalas-blockcontext-on-blocking-io)
   - [4.5. SHOULD NOT block](sections/4-concurrency-parallelism.md#45-should-not-block)
   - [4.6. SHOULD use a separate thread-pool for blocking I/O](sections/4-concurrency-parallelism.md#46-should-use-a-separate-thread-pool-for-blocking-io)

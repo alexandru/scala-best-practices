@@ -99,7 +99,7 @@ Rx / Iteratees are bad because:
 So there you have it. Learn and pick wisely - don't apply abstractions
 like some sort of special sauce without thinking about it
 
-### 4.3. MUST NOT wrap purely CPU-bound operations in Futures
+### 4.3. SHOULD NOT wrap purely CPU-bound operations in Futures
 
 This is in general an anti-pattern:
 
@@ -113,6 +113,9 @@ your performance problems. Especially in the case of a web server, in
 which the requests are already paralellized and the above would get
 executed in response to requests, shoving purely CPU-bound in that
 Future constructor will make your logic slower to execute, not faster.
+
+Also, in case you want to initialize a `Future[T]` with a constant,
+always use `Future.successful()`.
 
 ### 4.4. MUST use Scala's BlockContext on blocking I/O
 
