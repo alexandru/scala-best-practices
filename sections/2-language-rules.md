@@ -612,3 +612,19 @@ Wrong, it's `Runnable{def sayIt(): Unit}`.
 As a side-effect, this also decreases compilation times, as whenever
 `sayHelloRunnable` changes implementation, it also changes the
 signature so everything that depends on it must be recompiled.
+
+### 2.17. SHOULD NOT define case classes nested in other classes
+
+It is tempting, but you should almost never define nested case classes
+inside another object/class because it messes with Java's
+serialization. The reason is that when you serialize a case class it
+closes over the "this" pointer and serializes the whole object, which
+if you are putting in your App object means for every instance of a
+case class you serialize the whole world. 
+
+And the thing with case classes specifically is that:
+
+1. one expects a case class to be immutable (a value, a fact) and hence
+2. one expects a case class to be easily serializable
+
+Prefer flat hierachies.
