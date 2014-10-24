@@ -37,6 +37,7 @@ contribute.
   - [2.14. MUST NOT use magic values](sections/2-language-rules.md#214-must-not-use-magic-values)
   - [2.15. SHOULD NOT use "var" as shared state](sections/2-language-rules.md#215-should-not-use-var-as-shared-state)
   - [2.16. Public functions SHOULD have an explicit return type](sections/2-language-rules.md#216-public-functions-should-have-an-explicit-return-type)
+  - [2.17. SHOULD NOT define case classes nested in other classes](sections/2-language-rules.md#217-should-not-define-case-classes-nested-in-other-classes)
 
 - [3. Application Architecture](sections/3-architecture.md)
   - [3.1. SHOULD NOT use the Cake pattern](sections/3-architecture.md#31-should-not-use-the-cake-pattern)
