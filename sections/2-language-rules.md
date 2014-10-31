@@ -153,9 +153,9 @@ Defining traits is also a burden for readers of that code, because it
 signals a need for polymorphism. Example:
 
 ```scala
-trait PersonLike
- def name: String
- def age: Int
+trait PersonLike {
+  def name: String
+  def age: Int
 }
 
 case class Person(name: String, age: Int)
