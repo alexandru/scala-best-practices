@@ -609,7 +609,7 @@ def sayHelloRunnable(name: String) = new Runnable {
 Do you think it's `Runnable`?
 Wrong, it's `Runnable{def sayIt(): Unit}`.
 
-As a side-effect, this also decreases compilation times, as whenever
+As a side-effect, this also increases compilation times, as whenever
 `sayHelloRunnable` changes implementation, it also changes the
 signature so everything that depends on it must be recompiled.
 
