@@ -374,8 +374,10 @@ def doSomething(doit: Boolean) = {
 }
 ```
 
-If `doSomething(true)` is invoked by multiple threads, they will all access `foo`
-serially `foo` for the duration of the network computation.
+`foo` is in function scope, so each invocation of `doSomething(true)` will
+recompute `foo`. As a result, if `doSomething(true)` is invoked by multiple
+threads, they will all recompute `foo` serially, potentially resulting in an
+unnecessary bottleneck.
 
 Avoid declaring lazy vals in functions and consider it a smell as there is
 likely a better way to restructure your code.
