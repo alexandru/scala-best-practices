@@ -57,7 +57,7 @@ contribute.
   - [4.9. MUST provide a clearly defined and documented protocol for each component or actor that communicates over async boundaries](sections/4-concurrency-parallelism.md#49-must-provide-a-clearly-defined-and-documented-protocol-for-each-component-or-actor-that-communicates-over-async-boundaries)
   - [4.10. SHOULD always prefer single producer scenarios](sections/4-concurrency-parallelism.md#410-should-always-prefer-single-producer-scenarios)
   - [4.11. MUST NOT hard-code the thread-pool / execution context](sections/4-concurrency-parallelism.md#411-must-not-hardcode-the-thread-pool--execution-context)
-  - [4.12. MUST NOT use function-scoped lazy vals](sections/4-concurrency-parallelism.md#412-must-not-use-function--scoped-lazy-vals)
+  - [4.12. MUST NOT use function-scoped lazy vals](sections/4-concurrency-parallelism.md#412-must-not-use-function-scoped-lazy-vals)
 
 - [5. Akka Actors](sections/5-actors.md)
   - [5.1. SHOULD evolve the state of actors only in response to messages received from the outside](sections/5-actors.md#51-should-evolve-the-state-of-actors-only-in-response-to-messages-received-from-the-outside)
