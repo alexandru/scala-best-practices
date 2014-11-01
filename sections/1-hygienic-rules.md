@@ -47,9 +47,9 @@ IDEs and SBT plugins can be of great help, however if you're thinking
 about using one to automatically format your code, beware.
 
 You won’t find a plugin that is able to infer the developer’s intent,
-since that’s an NP-Complete problem (i.e. it requires human-like
-intelligence). The purpose of proper indentation and formatting isn't
-to follow some rigid rules set upon you in a cargo-cult way, but to
+since that requires a human-like understanding of the code and would be 
+near impossible to make. The purpose of proper indentation and formatting 
+isn't to follow some rigid rules set upon you in a cargo-cult way, but to
 make the code more logical, more readable, more
 approachable. Indentation is actually an art form, which is not awful
 since all you need is a nose for awful code and the urge of fixing
