@@ -344,7 +344,7 @@ zombie unrecoverable state. Which means that an external supervisor
 Instead do this:
 
 ```scala
-import scala.control.NonFatal
+import scala.util.control.NonFatal
 
 try {
  something()
