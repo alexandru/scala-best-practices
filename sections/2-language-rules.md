@@ -631,7 +631,7 @@ Prefer flat hierachies.
 
 ### 2.18 MUST NOT include classes, traits and objects inside package objects
 
-Classes, including case classes, traits and objects do not belong inside package objects. It is unnecessary, confuses the compiler and is therefore discouraged. For example, refraing from doing the following:
+Classes, including case classes, traits and objects do not belong inside package objects. It is unnecessary, confuses the compiler and is therefore discouraged. For example, refrain from doing the following:
 ```scala
 package foo
 
