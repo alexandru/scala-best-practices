@@ -628,3 +628,22 @@ And the thing with case classes specifically is that:
 2. one expects a case class to be easily serializable
 
 Prefer flat hierachies.
+
+### 2.18 MUST NOT include classes, traits and objects inside package objects
+
+Classes, including case classes, traits and objects do not belong inside package objects. It is unnecessary, confuses the compiler and is therefore discouraged. For example, refraing from doing the following:
+```scala
+package foo
+
+package object bar {
+  case object FooBar
+}
+```
+The same effect is achieved if all artifacts are inside a plain package:
+```scala
+package foo.bar
+
+case object FooBar
+```
+Package objects should only contain value, method and type alias definitions, etc.
+Scala allows multiple public classes in a single file, and the convention is to have the first letter of the filename be lowercase in such cases.
