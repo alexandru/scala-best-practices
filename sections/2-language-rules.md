@@ -190,7 +190,7 @@ trait DBService {
 }
 ```
 
-This snippet is taken from real-wold code - we've got a `DBService`
+This snippet is taken from real-world code - we've got a `DBService`
 that handles either queries or persistence in a database. Those two
 methods are actually unrelated, so if you only need to fetch the
 assets, why depend on things you don't need in components that require
