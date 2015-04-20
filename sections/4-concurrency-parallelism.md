@@ -356,3 +356,28 @@ idiomatic and acceptable this way:
 ```scala
 def doSomething(implicit ec: ExecutionContext): Future[String] = ???
 ```
+
+### 4.12. MUST NOT use function-scoped lazy vals
+
+Lazy vals synchronize on an object-instance lock. This includes lazy vals that
+are declared and used in function definitions. For example:
+
+```scala
+def doSomething(doit: Boolean) = {
+  lazy val foo = // some long-running computation
+  if (doit) {
+    val f = foo
+    // do something with f
+  } else {
+    // do something else
+  }
+}
+```
+
+`foo` is in function scope, so each invocation of `doSomething(true)` will
+recompute `foo`. As a result, if `doSomething(true)` is invoked by multiple
+threads, they will all recompute `foo` serially, potentially resulting in an
+unnecessary bottleneck.
+
+Avoid declaring lazy vals in functions and consider it a smell as there is
+likely a better way to restructure your code.
