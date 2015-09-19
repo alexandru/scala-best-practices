@@ -208,7 +208,7 @@ final class AssetsObservable
 
 object AssetsObservable {
   // constructor
-  def apply(db: DBService) = new AssetsObservable(db.fetchAssets)
+  def apply(db: DBService) = new AssetsObservable(db.getAssets)
 }
 ```
 
@@ -620,7 +620,7 @@ inside another object/class because it messes with Java's
 serialization. The reason is that when you serialize a case class it
 closes over the "this" pointer and serializes the whole object, which
 if you are putting in your App object means for every instance of a
-case class you serialize the whole world. 
+case class you serialize the whole world.
 
 And the thing with case classes specifically is that:
 
