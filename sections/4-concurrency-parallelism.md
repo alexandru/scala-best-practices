@@ -69,8 +69,9 @@ Akka's Actors are bad because:
   and B is not acceptable
 
 Rx and Iteratees - see Play's
-[Iteratees](https://www.playframework.com/documentation/2.3.x/Iteratees)
-/ [RxJava](https://github.com/ReactiveX/RxJava) /
+[Iteratees](https://www.playframework.com/documentation/2.5.x/Iteratees) / 
+[Akka Streams](http://doc.akka.io/docs/akka-stream-and-http-experimental/2.0-M2/scala.html) /
+[RxJava](https://github.com/ReactiveX/RxJava) /
 [Reactive Streams](http://www.reactive-streams.org/) /
 [Monifu](https://github.com/alexandru/monifu) are good because:
 
