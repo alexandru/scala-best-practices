@@ -1,5 +1,7 @@
 # Scala Best Practices
 
+[![Join the chat at https://gitter.im/alexandru/scala-best-practices](https://badges.gitter.im/alexandru/scala-best-practices.svg)](https://gitter.im/alexandru/scala-best-practices?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 <img src="https://raw.githubusercontent.com/monifu/scala-best-practices/master/assets/scala-logo-256.png"  align="right" width="100" height="100" />
 
 A collection of best practices, friendly to people that want to
