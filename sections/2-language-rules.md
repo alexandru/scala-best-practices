@@ -244,61 +244,35 @@ now, then there’s no guarantee that they will a moment from now. And
 if two objects aren’t equal forever, then they’re technically never
 equal ;-)
 
-### 2.6. SHOULD NOT declare abstract "val" or "var" or "lazy val" members
+### 2.6. SHOULD NOT declare abstract "var" members
 
-It's a bad practice to declare abstract vals or vars or lazy vals in
-abstract classes or traits. Do not do this:
+It's a bad practice to declare abstract vars in abstract classes or
+traits. Do not do this:
 
 ```scala
 trait Foo {
- val value: String
+  var value: String
 }
 ```
 
-Instead, prefer to always declare abstract things as `def`:
+Instead, prefer to declare abstract things as `def`:
 
 ```scala
 trait Foo {
- def value: String
+  def value: String
 }
 
-// can then be overridden as anything, including val
+// can then be overridden as anything
 class Bar(val value: String) extends Foo
 ```
 
-The reason has to do with the imposed restriction - a `val` can only
-be overridden with a `val`, a `var` can only be overridden with a
-`var`, etc. The only way to allow freedom to choose on inheritance is
-to use `def` for abstract members. And this freedom is important,
-because a `val` for example restricts the way this value can get
-initialized - only at construction time. Take this example:
+The reason has to do with the imposed restriction - a `var` can only
+be overridden with a `var`. The way to allow freedom to choose on
+inheritance is to use `def` for abstract members.  And why would you
+impose the restriction to use a `var` on those that inherit from your
+interface. `def` is generic so use it instead.
 
-```scala
-trait Foo { val value: String }
-
-trait Bar extends Foo { val uppercase = value.toUpperCase }
-
-trait MyValue extends Foo { val value = "hello" }
-
-// this triggers a NullPointerException
-new Bar with MyValue
-
-// this works
-new MyValue with Bar
-```
-
-In the sample above, a gotcha is exemplified related to the order in
-which the JVM + Scala executes things at construction time. It's a
-catch 22 between Scala's ideals and the JVM's limits. Reversing the
-order on inheritance works, but this is a fragile / error-prone
-solution. And because we have the `value` defined as a `val`, we
-cannot fix the above example by overriding `value` as a `lazy val`, an
-otherwise decent way of fixing such a sample.
-
-There's no good reason to impose on inheritors the way a value should
-get initialized. `def` is generic so use `def` instead.
-
-### 2.7. MUST NOT Throw Exceptions for Validations of User Input or Flow Control
+### 2.7. MUST NOT throw exceptions for validations of user input or flow control
 
 Two reasons:
 
@@ -631,7 +605,11 @@ Prefer flat hierachies.
 
 ### 2.18 MUST NOT include classes, traits and objects inside package objects
 
-Classes, including case classes, traits and objects do not belong inside package objects. It is unnecessary, confuses the compiler and is therefore discouraged. For example, refrain from doing the following:
+Classes, including case classes, traits and objects do not belong
+inside package objects. It is unnecessary, confuses the compiler and
+is therefore discouraged. For example, refrain from doing the
+following:
+
 ```scala
 package foo
 
@@ -639,11 +617,16 @@ package object bar {
   case object FooBar
 }
 ```
+
 The same effect is achieved if all artifacts are inside a plain package:
+
 ```scala
 package foo.bar
 
 case object FooBar
 ```
-Package objects should only contain value, method and type alias definitions, etc.
-Scala allows multiple public classes in a single file, and the convention is to have the first letter of the filename be lowercase in such cases.
+
+Package objects should only contain value, method and type alias
+definitions, etc.  Scala allows multiple public classes in a single
+file, and the convention is to have the first letter of the filename
+be lowercase in such cases.

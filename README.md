@@ -5,8 +5,8 @@
 A collection of best practices, friendly to people that want to
 contribute.
 
-- Version: `0.4`
-- Updated at: `2014-10-24`
+- Version: `1.0`
+- Updated at: `2015-12-18`
 
 ## Table of Contents
 
@@ -26,7 +26,7 @@ contribute.
   - [2.3. SHOULD NOT update a "var" using loops or conditions](sections/2-language-rules.md#23-should-not-update-a-var-using-loops-or-conditions)
   - [2.4. SHOULD NOT define useless traits](sections/2-language-rules.md#24-should-not-define-useless-traits)
   - [2.5. MUST NOT use "var" inside a case class](sections/2-language-rules.md#25-must-not-use-var-inside-a-case-class)
-  - [2.6. SHOULD NOT declare abstract val or var or lazy val members](sections/2-language-rules.md#26-should-not-declare-abstract-val-or-var-or-lazy-val-members)
+  - [2.6. SHOULD NOT declare abstract "var" members](sections/2-language-rules.md#26-should-not-declare-abstract-var-members)
   - [2.7. MUST NOT throw exceptions for validations of user input or flow control](sections/2-language-rules.md#27-must-not-throw-exceptions-for-validations-of-user-input-or-flow-control)
   - [2.8. MUST NOT catch Throwable](sections/2-language-rules.md#28-must-not-catch-throwable-when-catching-exceptions)
   - [2.9. MUST NOT use "null"](sections/2-language-rules.md#29-must-not-use-null)
@@ -38,6 +38,7 @@ contribute.
   - [2.15. SHOULD NOT use "var" as shared state](sections/2-language-rules.md#215-should-not-use-var-as-shared-state)
   - [2.16. Public functions SHOULD have an explicit return type](sections/2-language-rules.md#216-public-functions-should-have-an-explicit-return-type)
   - [2.17. SHOULD NOT define case classes nested in other classes](sections/2-language-rules.md#217-should-not-define-case-classes-nested-in-other-classes)
+  - [2.18. MUST NOT include classes, traits and objects inside package objects](sections/2-language-rules.md#218-must-not-include-classes-traits-and-objects-inside-package-objects)
 
 - [3. Application Architecture](sections/3-architecture.md)
   - [3.1. SHOULD NOT use the Cake pattern](sections/3-architecture.md#31-should-not-use-the-cake-pattern)
