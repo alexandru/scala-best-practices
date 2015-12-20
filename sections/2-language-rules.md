@@ -93,7 +93,7 @@ Avoid doing this, prefer the available operators instead, like `foldLeft`:
 val sum = elements.foldLeft(0)((acc, e) => acc + e.value)
 ```
 
-Or even better, know thy standard library and always prefer to
+Or even better, know the standard library and always prefer to
 use the built-in functions - the more expressive you go, the less bugs
 you'll have:
 
