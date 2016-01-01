@@ -157,3 +157,15 @@ if you don't need memoization.
 Also, make sure to read the
 [Rule 3.3](#33-should-not-apply-optimizations-without-profiling) on
 profiling.
+
+### 3.5. SHOULD NOT use parameterless ConfigFactory.load()
+
+It may be very tempting to call the oh-so-available-and-parameterless `ConfigFactory.load()` method whenever you need to pull something from the configuration, but doing so WILL boomerang back at you, for instance when writing tests. 
+
+If you have [`ConfigFactory.load()`](https://typesafehub.github.io/config/latest/api/com/typesafe/config/ConfigFactory.html#load--) scattered all around your classes they are basically loading the default configuration when your code runs, which more often than not, is not what you really want to happen in a testing environment, where you need to have a modified configuration loaded (e.g., different timeouts, different implementations, different IPs, etc.).
+
+One way to go about dealing with it, is to pass the `Config` instance itself to whomever needs it, or have the needed values from it passed in.
+
+The situation described here is in fact a flavour of the [prefer dependency injection (DI) over Service Locator](http://stackoverflow.com/questions/1638919/how-to-explain-dependency-injection-to-a-5-year-old/1638961#1638961) practise.
+
+One of the (very) few exceptions to avoiding `ConfigFactory.load()`, is if it's called once in your application's root, say in your `main()` (or equivalent) so that you don't have to hardcode your configuration's filename.
