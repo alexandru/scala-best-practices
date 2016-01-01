@@ -158,7 +158,7 @@ Also, make sure to read the
 [Rule 3.3](#33-should-not-apply-optimizations-without-profiling) on
 profiling.
 
-### 3.5. SHOULD NOT use parameterless ConfigFactory.load() or access a Config object directly
+### 3.5. MUST NOT use parameterless ConfigFactory.load() or access a Config object directly
 
 It may be very tempting to call the oh-so-available-and-parameterless `ConfigFactory.load()` method whenever you need to pull something from the configuration, but doing so WILL boomerang back at you, for instance when writing tests. 
 
