@@ -174,7 +174,7 @@ Another common practise it to have domain specific config classes, which are par
 
 This also has the benefit of clarity, as your domain specific config class conveys the needed properties in a more explicit and readable manner.
 
-It should be noted that this approach comes on the account of your config object's flexibly, since you will need to change its code upon introducing new configuration properties, but since you will need to introduce new code to in order to utilize the new property anyway, the overhead might be very worthwhile.
+It should be noted that this approach comes on the account of your config object's flexibly, since you will need to change its code upon introducing new configuration properties, but since you will need to introduce new code in order to utilize the new property anyway, the overhead might be very worthwhile.
 
 Consider the following example:
 
