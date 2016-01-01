@@ -158,7 +158,7 @@ Also, make sure to read the
 [Rule 3.3](#33-should-not-apply-optimizations-without-profiling) on
 profiling.
 
-### 3.5. SHOULD NOT use parameterless ConfigFactory.load()
+### 3.5. SHOULD NOT use parameterless ConfigFactory.load() or access a Config object directly
 
 It may be very tempting to call the oh-so-available-and-parameterless `ConfigFactory.load()` method whenever you need to pull something from the configuration, but doing so WILL boomerang back at you, for instance when writing tests. 
 
@@ -169,3 +169,41 @@ One way to go about dealing with it, is to pass the `Config` instance itself to 
 The situation described here is in fact a flavour of the [prefer dependency injection (DI) over Service Locator](http://stackoverflow.com/questions/1638919/how-to-explain-dependency-injection-to-a-5-year-old/1638961#1638961) practise.
 
 One of the (very) few exceptions to avoiding `ConfigFactory.load()`, is if it's called once in your application's root, say in your `main()` (or equivalent) so that you don't have to hardcode your configuration's filename.
+
+Another common practise it to have domain specific config classes, which are parsed from the general purpose, map-like, Config objects. The benefit of this approach is that specialized config classes faithfully represent your specific configuration needs, and once parsed, allow you to work against compiled classes in a safer manner (where "safer" means you do config.ip, instead of config.getString("ip")).
+
+This also has the benefit of clarity, as your domain specific config class conveys the needed properties in a more explicit and readable manner.
+
+It should be noted that this approach comes on the account of your config object's flexibly, since you will need to change its code upon introducing new configuration properties, but since you will need to introduce new code to in order to utilize the new property anyway, the overhead might be very worthwhile.
+
+Consider the following example:
+
+```scala
+  /*
+  this is your domain specific config class, with a pre-defined set of
+  properties you've modelled according to your domain, as opposed to
+  a map-like properties bag
+   */
+  case class MyComponentConfig(timeout: Long, ip: String)
+
+  // this parse method parses the map-like properties bag into
+  // a domain config class
+  def parseConfigProperties(properties: Config): MyComponentConfig = {
+    MyComponentConfig(properties.getLong("application.timeout"),
+                      properties.getString("application.ip"))
+  }
+
+  // this is your component, it depends on your domain specific config class
+  class MyComponent(myAppConfig: MyComponentConfig) {}
+
+  /*
+  parse the map-like configuration and pass a domain specific config to your component,
+  from this point onwards you are compile time safe, and can use things like myAppConfig.timeout
+  no more config.getX("application.hope.i.got.the.property.name.right")
+  */
+  val componentConfig: MyComponentConfig =
+    parseConfigProperties(ConfigFactory.load("myConfig.conf"))
+
+  new MyComponent(componentConfig)
+```
+```
