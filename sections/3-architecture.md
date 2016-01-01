@@ -206,4 +206,3 @@ Consider the following example:
 
   new MyComponent(componentConfig)
 ```
-```
