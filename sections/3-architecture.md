@@ -180,27 +180,29 @@ Consider the following example:
 
 ```scala
   /*
-  this is your domain specific config class, with a pre-defined set of
-  properties you've modelled according to your domain, as opposed to
-  a map-like properties bag
+   * This is your domain specific config class, with a pre-defined set of
+   * properties you've modelled according to your domain, as opposed to
+   * a map-like properties bag
    */
   case class MyComponentConfig(timeout: Long, ip: String)
 
-  // this parse method parses the map-like properties bag into
-  // a domain config class
+  /*
+   * This parse method parses the map-like properties bag into
+   * a domain config class
+   */
   def parseConfigProperties(properties: Config): MyComponentConfig = {
     MyComponentConfig(properties.getLong("application.timeout"),
                       properties.getString("application.ip"))
   }
 
-  // this is your component, it depends on your domain specific config class
+  // This is your component, it depends on your domain specific config class
   class MyComponent(myAppConfig: MyComponentConfig) {}
 
   /*
-  parse the map-like configuration and pass a domain specific config to your component,
-  from this point onwards you are compile time safe, and can use things like myAppConfig.timeout
-  no more config.getX("application.hope.i.got.the.property.name.right")
-  */
+   * Parse the map-like configuration and pass a domain specific config to your component,
+   * from this point onwards you are compile time safe, and can use things like myAppConfig.timeout
+   * no more config.getX("application.hope.i.got.the.property.name.right")
+   */
   val componentConfig: MyComponentConfig =
     parseConfigProperties(ConfigFactory.load("myConfig.conf"))
 
