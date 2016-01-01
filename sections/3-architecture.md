@@ -170,7 +170,7 @@ The situation described here is in fact a flavour of the [prefer dependency inje
 
 One of the (very) few exceptions to avoiding `ConfigFactory.load()`, is if it's called once in your application's root, say in your `main()` (or equivalent) so that you don't have to hardcode your configuration's filename.
 
-Another common practise it to have domain specific config classes, which are parsed from the general purpose, map-like, Config objects. The benefit of this approach is that specialized config classes faithfully represent your specific configuration needs, and once parsed, allow you to work against compiled classes in a safer manner (where "safer" means you do config.ip, instead of config.getString("ip")).
+Another common practise it to have domain specific config classes, which are parsed from the general purpose, map-like, Config objects. The benefit of this approach is that specialized config classes faithfully represent your specific configuration needs, and once parsed, allow you to work against compiled classes in a safer manner (where "safer" means you do `config.ip`, instead of `config.getString("ip")`).
 
 This also has the benefit of clarity, as your domain specific config class conveys the needed properties in a more explicit and readable manner.
 
