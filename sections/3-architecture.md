@@ -191,8 +191,8 @@ Consider the following example:
    * a domain config class
    */
   def parseConfigProperties(properties: Config): MyComponentConfig = {
-    MyComponentConfig(properties.getLong("application.timeout"),
-                      properties.getString("application.ip"))
+    MyComponentConfig(timeout = properties.getLong("application.timeout"),
+                      ip = properties.getString("application.ip"))
   }
 
   // This is your component, it depends on your domain specific config class
