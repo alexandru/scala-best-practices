@@ -56,6 +56,18 @@ management, well, be acquainted with the ugly secret of most Cake
 implementations. And for those conscious few that are doing this correctly,
 they end up in JVM initialization hell.
 
+But that's not the only problem. The bigger problem is that developers are
+lazy, so you end up with huge components having dozens of dependencies
+and responsibilities, because Cake encourages this. And after the original
+developers that did this damage move from the project, you end up with
+other, smaller components, that duplicate the functionality of the original
+components, just because the original components are hell-like to test because
+you have to mock or stub too many things (another code smell). And you've got
+this forever repeating cycle, with developers ending up hating the code base,
+doing the minimal amount of work required to accomplish their tasks, ending
+up with other big, ugly and fundamentally flawed components. And because of
+the tight coupling that Cake naturally induces, they won't be easy to refactor.
+
 So why do the above when something like this is much more readable
 and common sense:
 
@@ -65,7 +77,7 @@ class SomeService(dbService: DBService) {
 }
 ```
 
-Or if you need abstract stuff (but please read
+Or if you really need abstract stuff (but please read
 [rule 2.4](2-language-rules.md#24-should-not-define-useless-traits)
 on not defining useless traits):
 
@@ -97,7 +109,8 @@ So prefer plain old and reliable *constructor arguments*. And if you do
 need to use dependency injection libraries, then do it at the edges
 (like in Play's controllers). Because if a component depends on too many
 things, that's *code smell*. If a component depends on hard to initialize
-arguments, that's also *code smell*.  
+arguments, that's *code smell*. If you need to mock or stub interfaces in your
+tests just to test the pure business logic, that's probably *code smell* ;-)
 
 Don't hide painful things under the rug, fix it instead.
 
