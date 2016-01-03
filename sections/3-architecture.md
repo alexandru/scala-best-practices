@@ -160,51 +160,122 @@ profiling.
 
 ### 3.5. MUST NOT use parameterless ConfigFactory.load() or access a Config object directly
 
-It may be very tempting to call the oh-so-available-and-parameterless `ConfigFactory.load()` method whenever you need to pull something from the configuration, but doing so WILL boomerang back at you, for instance when writing tests. 
+It may be very tempting to call the oh-so-available-and-parameterless
+`ConfigFactory.load()` method whenever you need to pull something from
+the configuration, but doing so will boomerang back at you, for
+instance when writing tests.
 
-If you have [`ConfigFactory.load()`](https://typesafehub.github.io/config/latest/api/com/typesafe/config/ConfigFactory.html#load--) scattered all around your classes they are basically loading the default configuration when your code runs, which more often than not, is not what you really want to happen in a testing environment, where you need to have a modified configuration loaded (e.g., different timeouts, different implementations, different IPs, etc.).
+If you have
+[`ConfigFactory.load()`](https://typesafehub.github.io/config/latest/api/com/typesafe/config/ConfigFactory.html#load--)
+scattered all around your classes they are basically loading the
+default configuration when your code runs, which more often than not,
+is not what you really want to happen in a testing environment, where
+you need to have a modified configuration loaded (e.g., different
+timeouts, different implementations, different IPs, etc.).
 
-One way to go about dealing with it, is to pass the `Config` instance itself to whomever needs it, or have the needed values from it passed in.
+NEVER do this:
 
-The situation described here is in fact a flavour of the [prefer dependency injection (DI) over Service Locator](http://stackoverflow.com/questions/1638919/how-to-explain-dependency-injection-to-a-5-year-old/1638961#1638961) practise.
+```scala
+class MyComponent {
+  private val ip = ConfigFactory.load().getString("myComponent.ip")
+}
+```
 
-One of the (very) few exceptions to avoiding `ConfigFactory.load()`, is if it's called once in your application's root, say in your `main()` (or equivalent) so that you don't have to hardcode your configuration's filename.
+One way to go about dealing with it, is to pass the `Config` instance
+itself to whomever needs it, or have the needed values from it passed
+in. The situation described here is in fact a flavor of the
+[prefer dependency injection (DI) over Service Locator](http://stackoverflow.com/questions/1638919/how-to-explain-dependency-injection-to-a-5-year-old/1638961#1638961)
+practice.
 
-Another common practise it to have domain specific config classes, which are parsed from the general purpose, map-like, Config objects. The benefit of this approach is that specialized config classes faithfully represent your specific configuration needs, and once parsed, allow you to work against compiled classes in a safer manner (where "safer" means you do `config.ip`, instead of `config.getString("ip")`).
+You can call `ConfigFactory.load()`, but from your application's root,
+say in your `main()` (or equivalent) so that you don't have to hardcode your
+configuration's filename.
 
-This also has the benefit of clarity, as your domain specific config class conveys the needed properties in a more explicit and readable manner.
+Another good practice is to have domain specific config classes,
+which are parsed from the general purpose, map-like, Config
+objects. The benefit of this approach is that specialized config
+classes faithfully represent your specific configuration needs, and
+once parsed, allow you to work against compiled classes in a more
+type-safe way (where "safer" means you do `config.ip`, instead of
+`config.getString("ip")`).
 
-It should be noted that this approach comes on the account of your config object's flexibly, since you will need to change its code upon introducing new configuration properties, but since you will need to introduce new code in order to utilize the new property anyway, the overhead might be very worthwhile.
+This also has the benefit of clarity, as your domain specific config
+class conveys the needed properties in a more explicit and readable
+manner.
 
 Consider the following example:
 
 ```scala
-  /*
-   * This is your domain specific config class, with a pre-defined set of
-   * properties you've modelled according to your domain, as opposed to
-   * a map-like properties bag
-   */
-  case class MyComponentConfig(timeout: Long, ip: String)
+/** This is your domain specific config class, with a pre-defined set of
+  * properties you've modeled according to your domain, as opposed to
+  * a map-like properties bag
+  */
+case class AppConfig(
+  myComponent: MyComponentConfig,
+  httpClient: HttpClientConfig
+)
 
-  /*
-   * This parse method parses the map-like properties bag into
-   * a domain config class
-   */
-  def parseConfigProperties(properties: Config): MyComponentConfig = {
-    MyComponentConfig(timeout = properties.getLong("application.timeout"),
-                      ip = properties.getString("application.ip"))
+/** Configuration for [[MyComponent]] */
+case class MyComponentConfig(ip: String)
+
+/** Configuration for [[HttpClient]] */
+case class HttpClientConfig(
+  requestTimeout: FiniteDuration,
+  maxConnectionsPerHost: Int
+)
+
+object AppConfig {
+  def loadFromEnvironment(): AppConfig =
+    load(ConfigUtil.loadFromEnvironment())
+
+  /** Load from a given Typesafe Config object */
+  def load(config: Config): AppConfig =
+    AppConfig(
+        myComponent = MyComponentConfig(
+          ip = config.getString("myComponent.ip")
+        ),
+        httpClient = HttpClientConfig(
+          requestTimeout = config.getDuration("httpClient.requestTimeout", TimeUnit.MILLISECONDS).millis,
+          maxConnectionsPerHost = config.getInt("httpClient.maxConnectionsPerHost")
+        )
+    )
+}
+
+object ConfigUtil {
+  def loadFromEnvironment(): Config = {
+    Option(System.getProperty("config.file"))
+      .map(f => ConfigFactory.parseFile(f).resolve())
+      .getOrElse(
+        ConfigFactory.load(System.getProperty(
+          "config.resource", "application.conf")))
   }
+}
 
-  // This is your component, it depends on your domain specific config class
-  class MyComponent(myAppConfig: MyComponentConfig) {}
+/** One component */
+class HttpClient(config: HttpClientConfig) {
+  ???
+}
 
-  /*
-   * Parse the map-like configuration and pass a domain specific config to your component,
-   * from this point onwards you are compile time safe, and can use things like myAppConfig.timeout
-   * no more config.getX("application.hope.i.got.the.property.name.right")
-   */
-  val componentConfig: MyComponentConfig =
-    parseConfigProperties(ConfigFactory.load("myConfig.conf"))
-
-  new MyComponent(componentConfig)
+/** Another component, depending on your domain specific config.
+  * Also notice the sane dependency injection ;-)
+  */
+class MyComponent(config: MyComponentConfig, httpClient: HttpClient) {
+  ???
+}
 ```
+
+Benefits of this approach:
+
+- the config objects are just immutable case classes of primitives that
+  can be easily instantiated
+- your components end up depending on concrete and type-safe configuration
+  definitions related only to them, instead of receiving a monolithic and
+  unsafe `Config` that contains everything and that's expensive to instantiate
+- and now your IDE can help with documentation and discoverability
+- and your compiler can help with spelling errors
+
+NOTE about style: these configuration case classes tend to get big and to contain
+primitives (e.g. ints, strings, etc.), so usage of named
+parameters makes the code more resistant to change and less error-prone,
+versus relying on positioning. The style of indentation chosen here makes
+the instantiation look like a `Map` or a JSON object if you want.
