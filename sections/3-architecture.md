@@ -25,11 +25,48 @@ purpose is doing dependency injection and decoupling between various
 components, you'll fail hard and impose that maintenance burden on
 your colleagues.
 
-In fact, one should strive to not do dependency injection at all, or
-to do it only at the edges (like Play's controllers). Because if a
-component depends on too many things, that's *code smell*. If a
-component depends on hard to initialize arguments, that's also *code
-smell*. Don't hide painful things under the rug, fix it instead.
+For example, why would you do something like this:
+```scala
+trait SomeServiceComponent {
+  val someService: SomeService // abstract
+
+  trait SomeService {
+    def query: Rows
+  }
+}
+
+trait SomeServiceComponentImpl extends SomeServiceComponent {
+  self: DBServiceComponent =>
+
+  val someService = new SomeServiceImpl
+
+  class SomeServiceImpl extends SomeService {
+    def query = dbService.query
+  }
+}
+```
+
+When something like this is much more readable and common sense:
+
+```scala
+class SomeService(dbService: DBService) {
+  def query: Rows = dbService.query
+}
+```
+
+Are your dependencies going crazy? Are those constructors starting
+to hurt? That's a feature. It is called "*pain driven development*"
+(PDD for short :-)). It's a sign that the architecture is not OK
+and the various dependency injection libraries (or the Cake pattern)
+are not fixing the problem, but the symptoms, by hiding the junk under
+the rug.
+
+So prefer plain old and reliable *constructor arguments*. And if you do
+need to use dependency injection libraries, then do it at the edges
+(like in Play's controllers). Because if a component depends on too many
+things, that's *code smell*. If a component depends on hard to initialize
+arguments, that's also *code smell*. Don't hide painful things
+under the rug, fix it instead.
 
 ### 3.2. MUST NOT put things in Play's Global
 
