@@ -225,6 +225,9 @@ case class HttpClientConfig(
 )
 
 object AppConfig {
+  /** Loads your config.
+    * To be used from `main()` or equivalent.
+    */
   def loadFromEnvironment(): AppConfig =
     load(ConfigUtil.loadFromEnvironment())
 
@@ -242,6 +245,7 @@ object AppConfig {
 }
 
 object ConfigUtil {
+  /** Utility to replace direct usage of ConfigFactory.load() */
   def loadFromEnvironment(): Config = {
     Option(System.getProperty("config.file"))
       .map(f => ConfigFactory.parseFile(f).resolve())
