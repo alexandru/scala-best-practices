@@ -25,12 +25,14 @@ purpose is doing dependency injection and decoupling between various
 components, you'll fail hard and impose that maintenance burden on
 your colleagues.
 
-For example, why would you do something like this:
+For example, this is a common occurrence in Cake:
+
 ```scala
 trait SomeServiceComponent {
+  type SomeService <: SomeServiceLike
   val someService: SomeService // abstract
 
-  trait SomeService {
+  trait SomeServiceLike {
     def query: Rows
   }
 }
@@ -38,26 +40,56 @@ trait SomeServiceComponent {
 trait SomeServiceComponentImpl extends SomeServiceComponent {
   self: DBServiceComponent =>
 
-  val someService = new SomeServiceImpl
+  val someService = new SomeService
 
-  class SomeServiceImpl extends SomeService {
+  class SomeService extends SomeServiceLike {
     def query = dbService.query
   }
 }
 ```
 
-When something like this is much more readable and common sense:
+In the example above `someService` is effectively a
+[singleton](https://en.wikipedia.org/wiki/Singleton_pattern) and a genuine
+one, because it's probably missing *life-cycle management*. And if by reading
+this code your alarms weren't set off by a singleton missing life-cycle
+management, well, be acquainted with the ugly secret of most Cake
+implementations. And for those conscious few that are doing this correctly,
+they end up in JVM initialization hell.
+
+So why do the above when something like this is much more readable
+and common sense:
 
 ```scala
 class SomeService(dbService: DBService) {
-  def query: Rows = dbService.query
+  def query = dbService.query
+}
+```
+
+Or if you need abstract stuff (but please read
+[rule 2.4](2-language-rules.md#24-should-not-define-useless-traits)
+on not defining useless traits):
+
+```scala
+trait SomeService {
+  def query: Rows
+}
+
+object SomeService {
+  /** Builder for [[SomeService]] */
+  def apply(dbService: DBService): SomeService =
+    new SomeServiceImpl
+
+  private final class SomeServiceImpl(dbService: DBService)
+    extends SomeService {
+    def query: Rows = dbService.query
+  }
 }
 ```
 
 Are your dependencies going crazy? Are those constructors starting
 to hurt? That's a feature. It is called "*pain driven development*"
 (PDD for short :-)). It's a sign that the architecture is not OK
-and the various dependency injection libraries (or the Cake pattern)
+and the various dependency injection libraries or the Cake pattern
 are not fixing the problem, but the symptoms, by hiding the junk under
 the rug.
 
@@ -65,8 +97,9 @@ So prefer plain old and reliable *constructor arguments*. And if you do
 need to use dependency injection libraries, then do it at the edges
 (like in Play's controllers). Because if a component depends on too many
 things, that's *code smell*. If a component depends on hard to initialize
-arguments, that's also *code smell*. Don't hide painful things
-under the rug, fix it instead.
+arguments, that's also *code smell*.  
+
+Don't hide painful things under the rug, fix it instead.
 
 ### 3.2. MUST NOT put things in Play's Global
 
