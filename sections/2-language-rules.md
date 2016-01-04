@@ -402,7 +402,7 @@ val someValue: Option[Double] = ???
 val result = someValue.get + 1
 ```
 
-Don't ever do that, since your trading a `NullPointerException` for a
+Don't ever do that, since you're trading a `NullPointerException` for a
 `NoSuchElementException` and that defeats the purpose of using
 `Option` in the first place.
 
