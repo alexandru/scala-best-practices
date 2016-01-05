@@ -22,9 +22,12 @@ time and contending on the same MySQL table.
 Learn about the abstractions available and choose between them
 depending on the task at hand. There is no silver bullet that can be
 generally applied. The more high-level the abstraction, the less scope
-it has in solving issues. For example many developers in the Scala
+it has in solving issues. But the less scope and power it has, the simpler
+and more composable the model is. For example many developers in the Scala
 community are overusing Akka Actors - which are great, but not when
 misapplied. Like don't use an Akka Actor when a `Future` would do.
+
+> "*Power tends to corrupt, and absolute power corrupts absolutely*" -- Lord Acton
 
 Scala's Futures and Promises are good because:
 
@@ -35,6 +38,9 @@ Scala's Futures and Promises are good because:
   between few threads by default (the number of threads in the
   thread-pool is often directly proportional to the number of CPU cores
   you have)
+- alternative implementations can be even more simpler and efficient 
+  than Scala's standard Future, because the standard Future was designed
+  to be general purpose
 - the model is inherently simple and easy to use
 
 Futures and Promises are bad because they signal only one value from
@@ -67,40 +73,41 @@ Akka's Actors are bad because:
 - the model in general is actor A sending a message to actor B - but
   if you need to model a stream of events, this tight coupling between A
   and B is not acceptable
+- actors, as used in practice with Akka, tend to be inducing uncontrolled 
+  side effects and that's error prone, the opposite of functional programming
+  and not idiomatic Scala
 
-Rx and Iteratees - see Play's
+Streaming abstractions such as ReactiveX, Iteratees, FS2, Monix - see Play's
 [Iteratees](https://www.playframework.com/documentation/2.5.x/Iteratees) / 
 [Akka Streams](http://doc.akka.io/docs/akka-stream-and-http-experimental/2.0-M2/scala.html) /
 [RxJava](https://github.com/ReactiveX/RxJava) /
 [Reactive Streams](http://www.reactive-streams.org/) /
-[Monifu](https://github.com/alexandru/monifu) are good because:
+[FS2](https://github.com/functional-streams-for-scala/fs2) /
+[Monix](https://github.com/alexandru/monix) are good because:
 
-- they model unidirectional communications between a producer and
-  consumers - with an `Observable`/`Enumerator` being a channel that doesn't
-  care what listeners it has (think about a stream of data like a river
-  of information - the river doesn't care about who drinks from it)
+- they model unidirectional communications between producers and consumers 
+- events flow in one direction and so you much easily transform and compose
+  these streams
 - depending on implementation, they address back-pressure concerns by
-  default, with consumers signaling demand to the producer and the
-  producer insuring that it doesn't send more data than the consumer can
-  chew on
+  default
 - just as in the case of Future, because of the limitations, the model
-  is simple to use - and the exposed operators / combinators are awesome
+  is simple to use and much more reasonable and composable than actors,
+  with the exposed operators being awesome
 
-Rx / Iteratees are bad because:
+Streams are bad because:
 
 - they are only about unidirectional communications, it gets
-  complicated if you want bidirectional communications, so choose
-  actors instead
-
+  complicated if you want bidirectional communications, with 
+  actors being better at having dialogs
 - because of the strong contract they come with (i.e. no concurrent
   notifications for example), implementing new operators and data-source
   can be problematic, but usage on the consumer side is kept simple
   because of this
 
-So there you have it. Learn and pick wisely - don't apply abstractions
-like some sort of special sauce without thinking about it
+Watch this presentation by Runar Bjarnason on this subject
+because it's awesome: [Constraints Liberate, Liberties Constrain](https://www.youtube.com/watch?v=GqmsQeSzMdw)
 
-### 4.3. SHOULD NOT wrap purely CPU-bound operations in Futures
+### 4.3. SHOULD NOT wrap purely CPU-bound operations in Scala's standard Futures
 
 This is in general an anti-pattern:
 
