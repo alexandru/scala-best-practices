@@ -7,8 +7,8 @@
 A collection of best practices, friendly to people that want to
 contribute.
 
-- Version: `1.0`
-- Updated at: `2015-12-18`
+- Version: `1.1`
+- Updated at: `2016-01-15`
 
 ## Table of Contents
 
@@ -21,7 +21,7 @@ contribute.
   - [1.3. SHOULD break long functions](sections/1-hygienic-rules.md#13-should-break-long-functions)
   - [1.4. MUST NOT introduce spelling errors in names and comments](sections/1-hygienic-rules.md#14-must-not-introduce-spelling-errors-in-names-and-comments)
   - [1.5. Names MUST be meaningful](sections/1-hygienic-rules.md#15-names-must-be-meaningful)
-  
+
 - [2. Language Rules](sections/2-language-rules.md)
   - [2.1. MUST NOT use "return"](sections/2-language-rules.md#21-must-not-use-return)
   - [2.2. SHOULD use immutable data structures](sections/2-language-rules.md#22-should-use-immutable-data-structures)
