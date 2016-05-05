@@ -630,3 +630,19 @@ Package objects should only contain value, method and type alias
 definitions, etc.  Scala allows multiple public classes in a single
 file, and the convention is to have the first letter of the filename
 be lowercase in such cases.
+
+#### Implicit value classes can be defined in a package object
+
+In one rare circumstance, it makes sense to include classes defined directly in a `package object`. The reason for that is that implicit classes need to be nested inside another object/class, you cannot define a top level implicit in Scala. Nesting implicit value classes inside a `package object` also allows us to create a great importing experience for a library, as the single import of the package object will bring in all the necessary implicits.
+
+There is also no way around this, as defining the implicit value class means we cannot effectively define the implicit and the class separately, the whole point is to let the compiler avoid the runtime boxing by generating all the "right code" at compile time, by predicting the runtime boxing. This is the optimal way to achieve a pimp my library pattern performance wise, and we need the entire syntax "in one place".
+
+```scala
+
+package object dsl {
+  implicit class DateTimeAugmenter(val date: Datetime) extends AnyVal {
+    def yesterday: DateTime = date.plusDays(-1)
+  }
+}
+
+```
