@@ -372,7 +372,7 @@ The three big reasons for why you want to avoid Akka FSM:
 
 So to explain this reasoning. With Akka FSM you can only model
 deterministic finite automata and this is going to lead to pain at
-some point. Lets take a small sample:
+some point. Small sample:
 
 ```scala
 when (Available) {
