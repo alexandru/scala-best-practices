@@ -368,7 +368,7 @@ The three big reasons for why you want to avoid Akka FSM:
 
 1. with Akka FSM you can only model deterministic finite automata (DFAs)
 2. Akka FSM forces impure, side-effectful logic in your actor
-3. Akka FSM ties your business logic to Akka
+3. Akka FSM ties your business logic to Akka, making it hard to test
 
 So to explain this reasoning. With Akka FSM you can only model
 deterministic finite automata and this is going to lead to pain at
