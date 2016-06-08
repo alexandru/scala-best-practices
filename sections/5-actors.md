@@ -406,7 +406,9 @@ This is a made up API. Akka FSM doesn't support this. And at this
 point you'll need to fork Akka FSM in order to get it. It's certainly
 doable. I know I did it. But if you end up forking Akka's FSM for your
 project, you've clearly made a mistake in picking Akka FSM in the
-first place.
+first place. And of course, most people won't ever think of forking
+Akka FSM, so they'll end up with hard to test and unreasonable hacks,
+like pushing extra internal messages on this actor.
 
 The other reason for why Akka FSM is not adequate is because it forces
 you to model your state machine as a thing that mutates its
