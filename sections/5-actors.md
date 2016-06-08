@@ -352,3 +352,94 @@ class Worker(router: ActorRef) extends Actor {
   }
 }
 ```
+
+### 5.5. SHOULD NOT use Akka FSM
+
+Akka is exposing what many people thought to be a cool DSL for
+building state machines, called
+[Akka FSM](http://doc.akka.io/docs/akka/current/scala/fsm.html).
+
+But it's inadequate, limiting and its usage leads to bad
+practices. Current projects should try replacing it it and new
+projects should steer clear from it. Prefer to model actors with
+`context.become` instead.
+
+The three big reasons for why you want to avoid Akka FSM:
+
+1. with Akka FSM you can only model deterministic finite automata (DFAs)
+2. Akka FSM forces impure, side-effectful logic in your actor
+3. Akka FSM ties your business logic to Akka
+
+So to explain this reasoning. With Akka FSM you can only model
+deterministic finite automata and this is going to lead to pain at
+some point. Lets take a small sample:
+
+```scala
+when (Available) {
+  case Event(Setpoint(value), data) =>
+    goto(Ramping) using data.copy(setpoint=value)
+}
+
+when (Ramping) {
+  case Event(RampIsOver, data) =>
+    goto(Dispatched)
+}
+
+onTransition {
+  case Available -> Ramping =>
+    logger.info("Ramping ...")
+  case Ramping -> Dispatched =>
+    logger.info("Dispatched ...")
+}
+```
+
+This is a DFA. But the big problem that will come up is that for any
+reasonably complex state machine, you'll end up wanting to trigger
+multiple transitions in response to a single message. In other words
+you'll end up wanting to do something like this:
+
+```scala
+firstGoto(Ramping).thenGoto(Dispatched)
+```
+
+This is a made up API. Akka FSM doesn't support this. And at this
+point you'll need to fork Akka FSM in order to get it. It's certainly
+doable. I know I did it. But if you end up forking Akka's FSM for your
+project, you've clearly made a mistake in picking Akka FSM in the
+first place.
+
+The other reason for why Akka FSM is not adequate is because it forces
+you to model your state machine as a thing that mutates its
+state. Basically what you end up with is:
+
+- an object with identity and complex business logic (really, FSMs are
+  rarely simple)
+- that communicates with asynchronous messages
+
+Let me spell this out: This will have a worse outcome than the worst
+you've ever seen happening with OOP. Because this will be an object
+whose state depends on its history (e.g. with an identity) and because
+communications are async, introducing
+[nondeterminism](https://en.wikipedia.org/wiki/Nondeterministic_algorithm)
+in this logic is really, really easy.
+
+Which leads me to the fact that Akka FSM ties your business logic to
+Akka, which would be *complecting* by definition. This is bad because:
+
+- you cannot port that business logic to use another solution
+- in order to test your business logic, you now need to test that
+  actor and fake asynchronous communications (by means of
+  [akka-testkit](http://doc.akka.io/docs/akka/current/scala/testing.html))
+  
+In other words, you end up locked into Akka FSM and you end up testing
+Akka actors, instead of testing your own business logic. And those
+tests, no matter what those docs say, are horrible. Because as said,
+couple stateful objects with asynchronous messages and you'll get
+something worse than the worst you've ever seen.
+
+**The solution** is to have your business logic described outside of
+any actor and leave actors to be in charge just of communications,
+preferably evolved with `context.become`, as mentioned in point `5.2`.
+At which point you no longer need to test those actors, you no longer
+need to depend on `akka-testkit`. But such a strategy will rule out
+Akka FSM entirely.
