@@ -7,8 +7,8 @@
 A collection of best practices, friendly to people that want to
 contribute.
 
-- Version: `1.1`
-- Updated at: `2016-01-15`
+- Version: `1.2`
+- Updated at: `2016-06-08`
 
 ## Table of Contents
 
@@ -77,4 +77,5 @@ Open an issue to make suggestions, or create a pull request ;-)
 
 ---
 
-Copyright &copy; 2015, Some Rights Reserved.<br />Licensed under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/).
+Copyright &copy; 2015-2016, Some Rights Reserved.<br />
+Licensed under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/).
