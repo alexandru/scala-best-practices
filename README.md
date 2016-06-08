@@ -67,6 +67,7 @@ contribute.
   - [5.2. SHOULD mutate state in actors only with "context.become"](sections/5-actors.md#52-should-mutate-state-in-actors-only-with-contextbecome)
   - [5.3. MUST NOT leak the internal state of an actor in asynchronous closures](sections/5-actors.md#53-must-not-leak-the-internal-state-of-an-actor-in-asynchronous-closures)
   - [5.4. SHOULD do back-pressure](sections/5-actors.md#54-should-do-back-pressure)
+  - [5.5. SHOULD NOT use Akka FSM](sections/5-actors.md#55-should-not-use-akka-fsm)
 
 ---
 
