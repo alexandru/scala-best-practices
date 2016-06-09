@@ -360,8 +360,8 @@ building state machines, called
 [Akka FSM](http://doc.akka.io/docs/akka/current/scala/fsm.html).
 
 But it's inadequate, limiting and its usage leads to bad
-practices. Current projects should try replacing it it and new
-projects should steer clear from it. Prefer to model actors with
+practices. Current projects should try replacing it and new
+projects should steer clear from it. Prefer to model state machines with
 `context.become` instead.
 
 The three big reasons for why you want to avoid Akka FSM:
