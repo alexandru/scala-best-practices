@@ -77,8 +77,7 @@ Akka's Actors are bad because:
   side effects and that's error prone, the opposite of functional programming
   and not idiomatic Scala
 
-Streaming abstractions such as ReactiveX, Iteratees, FS2, Monix - see Play's
-[Iteratees](https://www.playframework.com/documentation/2.5.x/Iteratees) / 
+Streaming abstractions such as [Play's Iteratees](https://www.playframework.com/documentation/2.5.x/Iteratees) / 
 [Akka Streams](http://doc.akka.io/docs/akka-stream-and-http-experimental/2.0-M2/scala.html) /
 [RxJava](https://github.com/ReactiveX/RxJava) /
 [Reactive Streams](http://www.reactive-streams.org/) /
