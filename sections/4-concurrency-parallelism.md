@@ -355,7 +355,7 @@ def doSomething: Future[String] = ???
 Tight coupling between the execution context and your logic is not
 good and that import is tight-coupling, especially since in the
 context of a Play2 application you need to use a
-[different thread-pool](https://www.playframework.com/documentation/2.3.x/ThreadPools).
+[different thread-pool](https://www.playframework.com/documentation/2.5.x/ThreadPools).
 
 Just pass the ExecutionContext around as an implicit parameter. It's
 idiomatic and acceptable this way. Also, implicit parameters should be passed in the second group of parameters to avoid confusing implicit resolution. When passed in the first group, it allows for method calls like ```doSomething()``` that won't compile but most IDEs will show them as valid.
