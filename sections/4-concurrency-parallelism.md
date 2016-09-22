@@ -354,7 +354,7 @@ def doSomething: Future[String] = ???
 
 Tight coupling between the execution context and your logic is not
 good and that import is tight-coupling, especially since in the
-context of a Play2 application you need to use a
+context of a Play application you need to use a
 [different thread-pool](https://www.playframework.com/documentation/2.5.x/ThreadPools).
 
 Just pass the ExecutionContext around as an implicit parameter. It's
