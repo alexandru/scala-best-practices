@@ -89,7 +89,7 @@ trait SomeService {
 object SomeService {
   /** Builder for [[SomeService]] */
   def apply(dbService: DBService): SomeService =
-    new SomeServiceImpl
+    new SomeServiceImpl(dbService)
 
   private final class SomeServiceImpl(dbService: DBService)
     extends SomeService {
