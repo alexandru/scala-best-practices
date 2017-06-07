@@ -420,7 +420,7 @@ this:
 val result = someValue.map(_ + 1)
 ```
 
-### 2.11. MUST NOT use Java's Date or Calendar, instead use Joda-Time or JSR-310
+### 2.11. MUST NOT use Java's Date or Calendar, instead use `java.time` (JSR-310)
 
 Java's Date and Calendar classes from the standard library are awful
 because:
@@ -433,10 +433,9 @@ because:
 4. it doesn't make a difference between GMT and UTC
 5. years are expressed as 2 digits instead of 4
 
-Always use [Joda-Time](http://www.joda.org/joda-time/) - of if you can
-afford to switch to Java 8, there's a shinny new
-[JSR-310](http://www.threeten.org/) that's based on Joda-Time and that
-will be the new standard once people adopt Java 8.
+Instead, always use the [`java.time`](https://docs.oracle.com/javase/8/docs/api/java/time/package-summary.html) API
+introduced in Java 8 - or if you're stuck in pre-Java 8 land, use [Joda-Time](http://www.joda.org/joda-time/), which is
+its spiritual ancestor.
 
 ### 2.12. SHOULD NOT use Any or AnyRef or isInstanceOf / asInstanceOf
 

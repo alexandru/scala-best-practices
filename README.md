@@ -33,7 +33,7 @@ contribute.
   - [2.8. MUST NOT catch Throwable](sections/2-language-rules.md#28-must-not-catch-throwable-when-catching-exceptions)
   - [2.9. MUST NOT use "null"](sections/2-language-rules.md#29-must-not-use-null)
   - [2.10. MUST NOT use "Option.get"](sections/2-language-rules.md#210-must-not-use-optionget)
-  - [2.11. MUST NOT use Java's Date or Calendar, instead use Joda-Time or JSR-310](sections/2-language-rules.md#211-must-not-use-javas-date-or-calendar-instead-use-joda-time-or-jsr-310)
+  - [2.11. MUST NOT use Java's Date or Calendar, instead use `java.time` (JSR-310)](sections/2-language-rules.md#211-must-not-use-javas-date-or-calendar-instead-use-joda-time-or-jsr-310)
   - [2.12. SHOULD NOT use Any or AnyRef or isInstanceOf / asInstanceOf](sections/2-language-rules.md#212-should-not-use-any-or-anyref-or-isinstanceof--asinstanceof)
   - [2.13. MUST serialize dates as either Unix Timestamp or ISO 8601](sections/2-language-rules.md#213-must-serialize-dates-as-either-unix-timestamp-or-as-iso-8601)
   - [2.14. MUST NOT use magic values](sections/2-language-rules.md#214-must-not-use-magic-values)
