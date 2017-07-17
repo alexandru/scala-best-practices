@@ -155,7 +155,7 @@ them:
   you in the right direction
 - compare solutions by writing benchmarking code, but note that
   benchmarking is not easy and you should at least use a library like
-  [Google Caliper](https://code.google.com/p/caliper/)
+  [JMH](http://openjdk.java.net/projects/code-tools/jmh/), [Scala Meter](https://scalameter.github.io/)
 
 Overall - measure, don't guess.
 
