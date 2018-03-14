@@ -645,3 +645,63 @@ package object dsl {
 }
 
 ```
+
+### 2.19 SHOULD use head/tail and init/last decomposition only if they can be done in constant time and memory
+
+Example of head/tail decomposition:
+
+```scala
+def recursiveSumList(numbers: List[Int], accumulator: Int): Int =
+  numbers match {
+    case Nil =>
+      accumulator
+
+    case head :: tail =>
+      recursiveSumList(tail, accumulator + head)
+  }
+```
+
+`List` has a special head/tail extractor `::` because `List`s are **made** by always appending an element to the front of the list:
+
+```scala
+val numbers = 1 :: 2 :: 3 :: Nil
+```
+
+This is the same as:
+
+```scala
+val numbers = Nil.::(3).::(2).::(1)
+```
+
+For this reason, both `head` and `tail` on a list need only constant time and memory! These operations are `O(1)`.
+
+There is another head/tail extractor called `+:` that works on any `Seq`:
+
+```scala
+def recursiveSumSeq(numbers: Seq[Int], accumulator: Int): Int =
+  numbers match {
+    case Nil =>
+      accumulator
+
+    case head +: tail =>
+      recursiveSumSeq(tail, accumulator + head)
+  }
+```
+
+You can find the implementation of `+:` [here](https://github.com/scala/scala/blob/v2.12.4/src/library/scala/collection/SeqExtractors.scala). The problem is that other collections than `List` do not necessarily head/tail-decompose in constant time and memory, e.g. an `Array`:
+
+```scala
+val numbers = Array.range(0, 10000000)
+
+recursiveSumSeq(numbers, 0)
+```
+
+This is highly inefficient: each `tail` on an `Array` takes `O(n)` time and memory, because every time a new array needs to be created!
+
+Unfortunately, the Scala collections library permits these kinds of inefficient operations. We have to keep an eye out for them.
+
+---
+
+An example for an efficient init/last decomposition is `scala.collection.immutable.Queue`. It is backed by two `List`s and the efficiency of `head`, `tail`, `init` and `last` is *amortized constant* time and memory, as explained in the [Scala collection performance characteristics](http://docs.scala-lang.org/overviews/collections/performance-characteristics.html).
+
+I don't think that init/last decomposition is all that common. In general, it is analogue to head/tail decomposition. The init/last deconstructor for any `Seq` is `:+`.
