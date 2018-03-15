@@ -1,8 +1,8 @@
-## 3. Application Architecture
+## Application Architecture
 
 <img src="https://raw.githubusercontent.com/monifu/scala-best-practices/master/assets/scala-logo-256.png"  align="right" width="128" height="128" />
 
-### 3.1. SHOULD NOT use the Cake Pattern
+### SHOULD NOT use the Cake Pattern
 
 The Cake Pattern is a very
 [good idea in theory](https://www.youtube.com/watch?v=yLbdw06tKPQ) -
@@ -114,7 +114,7 @@ tests just to test the pure business logic, that's probably *code smell* ;-)
 
 Don't hide painful things under the rug, fix it instead.
 
-### 3.2. MUST NOT put things in Play's Global
+### MUST NOT put things in Play's Global
 
 I'm seeing this over and over again.
 
@@ -126,7 +126,7 @@ nothing more.
 
 Come up with your own freaking namespace for your utilities.
 
-### 3.3. SHOULD NOT apply optimizations without profiling
+### SHOULD NOT apply optimizations without profiling
 
 Profiling is a prerequisite for doing optimizations. Never work on
 optimizations, unless through profiling you discover the actual
@@ -159,7 +159,7 @@ them:
 
 Overall - measure, don't guess.
 
-### 3.4. SHOULD be mindful of the garbage collector
+### SHOULD be mindful of the garbage collector
 
 Don't over allocate resources, unless you need to. We want to avoid
 micro optimizations, but always be mindful about the effects
@@ -241,7 +241,7 @@ Also, make sure to read the
 [Rule 3.3](#33-should-not-apply-optimizations-without-profiling) on
 profiling.
 
-### 3.5. MUST NOT use parameterless ConfigFactory.load() or access a Config object directly
+### MUST NOT use parameterless ConfigFactory.load() or access a Config object directly
 
 It may be very tempting to call the oh-so-available-and-parameterless
 `ConfigFactory.load()` method whenever you need to pull something from

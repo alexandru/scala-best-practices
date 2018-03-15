@@ -1,4 +1,4 @@
-## 1. Hygienic Rules
+## Hygienic Rules
 
 <img src="https://raw.githubusercontent.com/monifu/scala-best-practices/master/assets/scala-logo-256.png"  align="right" width="128" height="128" />
 
@@ -8,7 +8,7 @@ targeting computer systems, but also your colleagues and your future
 self, so respecting these rules is just like washing your hands after
 going to the bathroom.
 
-### 1.1. SHOULD enforce a reasonable line length
+### SHOULD enforce a reasonable line length
 
 There's a whole science on typography which says that people lose
 their focus when the line of text is too wide, a long line makes it
@@ -41,7 +41,7 @@ So as a balance:
 
 On the other hand, anything that goes beyond 120 chars is an abomination.
 
-### 1.2. MUST NOT rely on a SBT or IDE plugin to do the formatting for you
+### MUST NOT rely on a SBT or IDE plugin to do the formatting for you
 
 IDEs and SBT plugins can be of great help, however if you're thinking
 about using one to automatically format your code, beware.
@@ -157,7 +157,7 @@ other issues, things get even more complicated. So really, you won't
 find a plugin that does this analysis and that can make the right
 decision for you.
 
-### 1.3. SHOULD break long functions
+### SHOULD break long functions
 
 Ideally functions should only be a couple of lines long. If the lines
 get too big, then we need to break them into smaller functions and
@@ -168,13 +168,13 @@ functions available in other scopes, the purpose here is to primarily
 aid readability, so in Scala we can do inner-functions to break logic
 into pieces.
 
-### 1.4. MUST NOT introduce spelling errors in names and comments
+### MUST NOT introduce spelling errors in names and comments
 
 Spelling errors are freakishly annoying, interrupting a reader's flow.
 Use a spell-checker. Intelligent IDEs have built-in
 spell-checkers. Note the underlined spelling warnings and fix them.
 
-### 1.5. Names MUST be meaningful
+### Names MUST be meaningful
 
 *"There are only two hard things in Computer Science: cache
 invalidation and naming things."* -- Phil Karlton

@@ -1,8 +1,8 @@
-## 5. Akka Actors
+## Akka Actors
 
 <img src="https://raw.githubusercontent.com/monifu/scala-best-practices/master/assets/scala-logo-256.png"  align="right" width="128" height="128" />
 
-### 5.1. SHOULD evolve the state of actors only in response to messages received from the outside
+### SHOULD evolve the state of actors only in response to messages received from the outside
 
 When using Akka actors, their mutable state should always evolve in
 response to messages received from the outside. An anti-pattern that
@@ -29,7 +29,7 @@ right.
 If you really need to periodically do something inside an actor, then
 that scheduler must not be initialized inside the actor. Take it out.
 
-### 5.2. SHOULD mutate state in actors only with context.become
+### SHOULD mutate state in actors only with context.become
 
 Say we've got an actor that mutates its state (most actors do),
 doesn't even matter what state that is:
@@ -81,7 +81,7 @@ If that doesn't instantly ring a bell, just wait until you'll have to
 model a state machine with 10 states in it and dozens of possible
 transitions and effects to go along with it, then you'll get it.
 
-### 5.3. MUST NOT leak the internal state of an actor in asynchronous closures
+### MUST NOT leak the internal state of an actor in asynchronous closures
 
 Again with the mutable state, spot the problem:
 
@@ -188,7 +188,7 @@ case object Rejected
 
 Yeap, actor-based designs can get tricky.
 
-### 5.4. SHOULD do back-pressure
+### SHOULD do back-pressure
 
 Say you've got an actor that produces values - like reading items from
 a RabbitMQ or your own half-assed queue stored in a MySQL table, or
@@ -353,7 +353,7 @@ class Worker(router: ActorRef) extends Actor {
 }
 ```
 
-### 5.5. SHOULD NOT use Akka FSM
+### SHOULD NOT use Akka FSM
 
 Akka is exposing what many people thought to be a cool DSL for
 building state machines, called

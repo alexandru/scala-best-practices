@@ -1,4 +1,4 @@
-## 0. Preface
+## Preface
 
 <img src="https://raw.githubusercontent.com/monifu/scala-best-practices/master/assets/scala-logo-256.png"  align="right" width="128" height="128" />
 
@@ -15,7 +15,7 @@ if you know what you're doing.
 
 This list is also far from complete.
 
-### 0.1. MUST NOT follow advice blindly
+### MUST NOT follow advice blindly
 
 This should be the first rule of any document that describes best
 practices.

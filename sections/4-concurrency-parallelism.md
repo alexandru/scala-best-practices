@@ -1,8 +1,8 @@
-## 4. Concurrency and Parallelism
+## Concurrency and Parallelism
 
 <img src="https://raw.githubusercontent.com/monifu/scala-best-practices/master/assets/scala-logo-256.png"  align="right" width="128" height="128" />
 
-### 4.1. SHOULD avoid concurrency like the plague it is
+### SHOULD avoid concurrency like the plague it is
 
 Avoid having to deal with concurrency as much as possible. People good
 at concurrency avoid it like the plague it is.
@@ -17,7 +17,7 @@ persisted in MySQL, that job can take longer than 1 minute to execute
 and thus you can end up with 2 or 3 processes executing at the same
 time and contending on the same MySQL table.
 
-### 4.2. SHOULD use appropriate abstractions only where suitable - Future, Actors, Rx
+### SHOULD use appropriate abstractions only where suitable - Future, Actors, Rx
 
 Learn about the abstractions available and choose between them
 depending on the task at hand. There is no silver bullet that can be
@@ -106,7 +106,7 @@ Streams are bad because:
 Watch this presentation by Runar Bjarnason on this subject
 because it's awesome: [Constraints Liberate, Liberties Constrain](https://www.youtube.com/watch?v=GqmsQeSzMdw)
 
-### 4.3. SHOULD NOT wrap purely CPU-bound operations in Scala's standard Futures
+### SHOULD NOT wrap purely CPU-bound operations in Scala's standard Futures
 
 This is in general an anti-pattern:
 
@@ -124,7 +124,7 @@ Future constructor will make your logic slower to execute, not faster.
 Also, in case you want to initialize a `Future[T]` with a constant,
 always use `Future.successful()`.
 
-### 4.4. MUST use Scala's BlockContext on blocking I/O
+### MUST use Scala's BlockContext on blocking I/O
 
 This includes all blocking I/O, including SQL queries. Real sample:
 
@@ -186,7 +186,7 @@ NOTE: the `blocking` call also serves as documentation, even if the
 underlying thread-pool doesn't support `BlockContext`, as things that
 block are totally non-obvious.
 
-### 4.5. SHOULD NOT block
+### SHOULD NOT block
 
 Sometimes you have to block the thread underneath - unfortunately JDBC
 doesn't have a non-blocking API. However, when you have a choice,
@@ -211,7 +211,7 @@ fetchSomething.map(_.toUpperCase)
 Also checkout [Scala-Async](https://github.com/scala/async) to make
 this easier.
 
-### 4.6. SHOULD use a separate thread-pool for blocking I/O
+### SHOULD use a separate thread-pool for blocking I/O
 
 Related to
 [Rule 4.4](#44-must-use-scalas-blockcontext-on-blocking-io), if you're
@@ -272,7 +272,7 @@ can be imported as an implicit in scope, because then people would
 start using it for CPU-bound stuff by mistake, so it's better to hide
 it and provide this helper.
 
-### 4.7. All public APIs SHOULD BE thread-safe
+### All public APIs SHOULD BE thread-safe
 
 As a general rule of software engineering on top of the JVM,
 absolutely all public APIs from inside your process will end up being
@@ -299,7 +299,7 @@ useless lock to have in a larger context. Remember, locks are not
 composable and are very error-prone. Never leave the responsibility of
 synchronizing for contention on your users.
 
-### 4.8. SHOULD avoid contention on shared reads
+### SHOULD avoid contention on shared reads
 
 Meet
 [Amdahl's Law](https://en.wikipedia.org/wiki/Amdahl's_law). Synchronizing
@@ -315,7 +315,7 @@ Come up with better synchronization schemes that does not involve
 synchronizing reads, like atomic references or STM. If you aren't able
 to do that, then avoid this altogether by using proper abstractions.
 
-### 4.9. MUST provide a clearly defined and documented protocol for each component or actor that communicates over async boundaries
+### MUST provide a clearly defined and documented protocol for each component or actor that communicates over async boundaries
 
 A function signature is not enough for documenting the protocol of
 problematic components. Especially when talking about communications
@@ -329,7 +329,7 @@ As a guideline, don't shy away from writing comments and document:
 - the proper ordering of calls
 - everything that can go wrong
 
-### 4.10. SHOULD always prefer single-producer scenarios
+### SHOULD always prefer single-producer scenarios
 
 Shared writes are not parallelizable, whereas shared reads are
 embarrassingly parallelizable. As a metaphor, 100,000 people can watch
@@ -342,7 +342,7 @@ pounding on the same resource, because Amdahl's Law.
 
 Checkout [LMAX Disruptor](https://lmax-exchange.github.io/disruptor/).
 
-### 4.11. MUST NOT hardcode the thread-pool / execution context
+### MUST NOT hardcode the thread-pool / execution context
 
 This is a general design issue related to the project as a whole, but don't do this:
 

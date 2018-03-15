@@ -1,8 +1,8 @@
-## 2. Language Rules
+## Language Rules
 
 <img src="https://raw.githubusercontent.com/monifu/scala-best-practices/master/assets/scala-logo-256.png"  align="right" width="128" height="128" />
 
-### 2.1. MUST NOT use "return"
+### MUST NOT use "return"
 
 The `return` statement from Java signals a side-effect - unwind the
 stack and give this value to the caller. In a language in which the
@@ -33,7 +33,7 @@ those gigantic methods with lots of if/else branches, the presence of
 a `return` is a clear signal that the code stinks, a magnet for future
 bugs and is thus in urgent need of refactoring.
 
-### 2.2. SHOULD use immutable data-structures
+### SHOULD use immutable data-structures
 
 Immutable data-structures are facts that can be compared and reasoned
 about. Mutable things are error-prone buckets. You should never use a
@@ -76,7 +76,7 @@ So there you have it - a public API exposing a mutable data-structure
 is an abomination of nature, leading to problems that can be worse
 than what happens when doing manual memory management.
 
-### 2.3. SHOULD NOT update a `var` using loops or conditions
+### SHOULD NOT update a `var` using loops or conditions
 
 It's a mistake that most Java developers do when they come to Scala. Example:
 
@@ -138,7 +138,7 @@ And you know, as soon as the branches get too complex, just as was said in the
 discussion on `return`, that's a sign that the *code smells* and is in need
 of refactoring, which is a good thing.
 
-### 2.4. SHOULD NOT define useless traits
+### SHOULD NOT define useless traits
 
 There was this Java Best Practice that said "*program to an interface,
 not to an implementation*", a best practice that has been cargo-cult-ed
@@ -215,7 +215,7 @@ object AssetsObservable {
 See, I do not need to mock an entire `DBService` in order to test the
 above.
 
-### 2.5. MUST NOT use "var" inside a case class
+### MUST NOT use "var" inside a case class
 
 Case classes are syntactic sugar for defining classes in which - all
 constructor arguments are public and immutable and thus part of the
@@ -244,7 +244,7 @@ now, then there’s no guarantee that they will a moment from now. And
 if two objects aren’t equal forever, then they’re technically never
 equal ;-)
 
-### 2.6. SHOULD NOT declare abstract "var" members
+### SHOULD NOT declare abstract "var" members
 
 It's a bad practice to declare abstract vars in abstract classes or
 traits. Do not do this:
@@ -272,7 +272,7 @@ inheritance is to use `def` for abstract members.  And why would you
 impose the restriction to use a `var` on those that inherit from your
 interface. `def` is generic so use it instead.
 
-### 2.7. MUST NOT throw exceptions for validations of user input or flow control
+### MUST NOT throw exceptions for validations of user input or flow control
 
 Two reasons:
 
@@ -293,7 +293,7 @@ As an appeal to authority, it's reasonable to reference
 [Functional Programming with Scala](http://www.manning.com/bjarnason/),
 chapter 4.
 
-### 2.8. MUST NOT catch Throwable when catching Exceptions
+### MUST NOT catch Throwable when catching Exceptions
 
 Never, never, never do this:
 
@@ -328,7 +328,7 @@ try {
 }
 ```
 
-### 2.9. MUST NOT use "null"
+### MUST NOT use "null"
 
 You must avoid using `null`. Prefer Scala's `Option[T]` instead. Null
 values are error prone, because the compiler cannot protect
@@ -391,7 +391,7 @@ list.flatMap(x => Some(x).filter(_ % 2 == 0))
 // => 2,4,6
 ```
 
-### 2.10. MUST NOT use `Option.get`
+### MUST NOT use `Option.get`
 
 You might be tempted to do this:
 
@@ -420,7 +420,7 @@ this:
 val result = someValue.map(_ + 1)
 ```
 
-### 2.11. MUST NOT use Java's Date or Calendar, instead use `java.time` (JSR-310)
+### MUST NOT use Java's Date or Calendar, instead use `java.time` (JSR-310)
 
 Java's Date and Calendar classes from the standard library are awful
 because:
@@ -437,7 +437,7 @@ Instead, always use the [`java.time`](https://docs.oracle.com/javase/8/docs/api/
 introduced in Java 8 - or if you're stuck in pre-Java 8 land, use [Joda-Time](http://www.joda.org/joda-time/), which is
 its spiritual ancestor.
 
-### 2.12. SHOULD NOT use Any or AnyRef or isInstanceOf / asInstanceOf
+### SHOULD NOT use Any or AnyRef or isInstanceOf / asInstanceOf
 
 Avoid using Any or AnyRef or explicit casting, unless you've got a
 really good reason for it. Scala is a language that derives value from
@@ -484,7 +484,7 @@ json match {
 }
 ```
 
-### 2.13. MUST serialize dates as either Unix timestamp, or as ISO 8601
+### MUST serialize dates as either Unix timestamp, or as ISO 8601
 
 Unix timestamps, provided that we are talking about the number of
 seconds or milliseconds since 1970-01-01 00:00:00 UTC (with emphasis
@@ -495,7 +495,7 @@ is a decent serialization format supported by most libraries.
 Avoid anything else and also when storing dates without a timezone
 attached (like in MySQL), always express that info in UTC.
 
-### 2.14. MUST NOT use magic values
+### MUST NOT use magic values
 
 Although not uncommon in other languages to use "magic" (special)
 values like `-1` to signal particular outcomes, in Scala there are a
@@ -510,7 +510,7 @@ Don't do this:
 val index = list.find(someTest).getOrElse(-1)
 ```
 
-### 2.15. SHOULD NOT use "var" as shared state
+### SHOULD NOT use "var" as shared state
 
 Avoid using "var" at least when speaking about shared mutable
 state. Because if you do have shared state expressed as vars, you'd
@@ -543,7 +543,7 @@ in the case of an atomic reference means spin loops. But it will save
 you from lots and lots of headaches later. And it's best to avoid
 mutation entirely.
 
-### 2.16. Public functions SHOULD have an explicit return type
+### Public functions SHOULD have an explicit return type
 
 Prefer this:
 
@@ -586,7 +586,7 @@ As a side-effect, this also increases compilation times, as whenever
 `sayHelloRunnable` changes implementation, it also changes the
 signature so everything that depends on it must be recompiled.
 
-### 2.17. SHOULD NOT define case classes nested in other classes
+### SHOULD NOT define case classes nested in other classes
 
 It is tempting, but you should almost never define nested case classes
 inside another object/class because it messes with Java's
@@ -602,7 +602,7 @@ And the thing with case classes specifically is that:
 
 Prefer flat hierachies.
 
-### 2.18 MUST NOT include classes, traits and objects inside package objects
+### MUST NOT include classes, traits and objects inside package objects
 
 Classes, including case classes, traits and objects do not belong
 inside package objects. It is unnecessary, confuses the compiler and
@@ -646,7 +646,7 @@ package object dsl {
 
 ```
 
-### 2.19 SHOULD use head/tail and init/last decomposition only if they can be done in constant time and memory
+### SHOULD use head/tail and init/last decomposition only if they can be done in constant time and memory
 
 Example of head/tail decomposition:
 
