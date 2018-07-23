@@ -43,6 +43,7 @@ contribute.
   - [2.18. MUST NOT include classes, traits and objects inside package objects](sections/2-language-rules.md#218-must-not-include-classes-traits-and-objects-inside-package-objects)
   - [2.19. SHOULD use head/tail and init/last decomposition only if they can be done in constant time and memory](sections/2-language-rules.md#219-should-use-head-tail-and-init-last-decomposition-only-if-they-can-be-done-in-constant-time-and-memory)
   - [2.20. MUST NOT use `Seq.head`](sections/2-language-rules.md#210-must-not-use-seqhead)
+  - [2.21. Case classes SHOULD be final](sections/2-language-rules.md#221-case-classes-should-be-final)
 
 - [3. Application Architecture](sections/3-architecture.md)
   - [3.1. SHOULD NOT use the Cake pattern](sections/3-architecture.md#31-should-not-use-the-cake-pattern)
