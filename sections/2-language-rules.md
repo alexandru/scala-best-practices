@@ -705,3 +705,43 @@ Unfortunately, the Scala collections library permits these kinds of inefficient 
 An example for an efficient init/last decomposition is `scala.collection.immutable.Queue`. It is backed by two `List`s and the efficiency of `head`, `tail`, `init` and `last` is *amortized constant* time and memory, as explained in the [Scala collection performance characteristics](http://docs.scala-lang.org/overviews/collections/performance-characteristics.html).
 
 I don't think that init/last decomposition is all that common. In general, it is analogue to head/tail decomposition. The init/last deconstructor for any `Seq` is `:+`.
+
+
+### 2.20 MUST NOT use `Seq.head`
+
+You might be tempted to this:
+
+```scala
+val userList: List[User] = ???
+
+// ....
+val firstName = userList.head.firstName
+```
+
+Don't ever do this, as this will throw `NoSuchElementException` if the sequence is empty.
+
+Alternatives:
+
+1. using `Seq.headOption` possibly combined with `getOrElse` or pattern matching
+
+    Example:
+    
+    ```scala
+    val firstName = userList.headOption match {
+        case Some(user) => user.firstName
+        case _ => "Unknown"
+      }
+    ```
+
+2. using pattern matching with the cons operator `::` if you're dealing with a `List`
+
+    Example:
+    
+    ```scala
+    val firstName = userList match {
+     case head :: _ => head.firstName
+     case _ => "Unknown"
+    }
+    ```
+
+3. using `NonEmptyList` if it is required that the list should never be empty. (See [cats](https://typelevel.org/cats/datatypes/nel.html), [scalaz](https://github.com/scalaz/scalaz/blob/series/7.3.x/core/src/main/scala/scalaz/NonEmptyList.scala), ...)
