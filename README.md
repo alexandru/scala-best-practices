@@ -8,7 +8,7 @@ A collection of best practices, friendly to people that want to
 contribute.
 
 - Version: `1.2`
-- Updated at: `2016-06-08`
+- Updated at: `July 2018`
 
 ## Table of Contents
 
