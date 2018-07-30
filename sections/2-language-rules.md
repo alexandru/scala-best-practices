@@ -745,3 +745,44 @@ Alternatives:
     ```
 
 3. using `NonEmptyList` if it is required that the list should never be empty. (See [cats](https://typelevel.org/cats/datatypes/nel.html), [scalaz](https://github.com/scalaz/scalaz/blob/series/7.3.x/core/src/main/scala/scalaz/NonEmptyList.scala), ...)
+
+### 2.21 Case classes SHOULD be final
+
+Extending a case class will lead to unexpected behaviour. Observe the following:
+```scala
+scala> case class Foo(v:Int)
+defined class Foo
+
+scala> class Bar(v: Int, val x: Int) extends Foo(v)
+defined class Bar
+
+scala> new Bar(1, 1) == new Bar(1, 1)
+res25: Boolean = true
+
+scala> new Bar(1, 1) == new Bar(1, 2)
+res26: Boolean = true
+// ????
+scala> new Bar(1,1) == Foo(1)
+res27: Boolean = true
+
+scala> class Baz(v: Int) extends Foo(v)
+defined class Baz
+
+scala> new Baz(1) == new Bar(1,1)
+res29: Boolean = true //???
+
+scala> println (new Bar(1,1))
+Foo(1) // ???
+
+scala> new Bar(1,2).copy()
+res49: Foo = Foo(1) // ???
+```
+Credits:[Why case classes should be final](https://stackoverflow.com/a/34562046/3856808)
+
+So by default case classes should always be defined as final. 
+
+Example:
+
+```scala
+final case class User(name: String, id: Long)
+```
