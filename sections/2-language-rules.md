@@ -602,6 +602,8 @@ And the thing with case classes specifically is that:
 
 Prefer flat hierachies.
 
+Furthermore nested types, i.e. Path Dependent Types have a quite specific use case in Scala, usually to do clever things with co/contra-variance.  Unless you are using Path Dependent Types for this reason, don't use them. See https://danielwestheide.com/blog/2013/02/13/the-neophytes-guide-to-scala-part-13-path-dependent-types.html
+
 ### 2.18 MUST NOT include classes, traits and objects inside package objects
 
 Classes, including case classes, traits and objects do not belong
