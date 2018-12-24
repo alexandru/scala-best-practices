@@ -113,7 +113,7 @@ def compute(x) = {
     result += 2
   }
   else {
-  	result += 1
+    result += 1
   }
 
   result
@@ -130,7 +130,7 @@ def computeResult(x) = {
   if (needToAddTwo)
     r + 2
   else
-  	r + 1
+    r + 1
 }
 ```
 
