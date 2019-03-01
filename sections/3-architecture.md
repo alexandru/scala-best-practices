@@ -366,3 +366,104 @@ primitives (e.g. ints, strings, etc.), so usage of named
 parameters makes the code more resistant to change and less error-prone,
 versus relying on positioning. The style of indentation chosen here makes
 the instantiation look like a `Map` or a JSON object if you want.
+
+### 3.6 SHOULD put type-class instances as close to the call site as possible
+
+Type-classes are a powerful feature close to functional programming mindset. It 
+favours composition and is central to core `Scala` libraries like 
+[`circe`](https://circe.github.io/circe/), [`cats`](https://typelevel.org/cats/) 
+or even [`scalacheck`](https://www.scalacheck.org/).
+
+One may keep wondering where to put the type-class instances. Each type-class
+has a purpose. Some may be more general like purely functional abstractions 
+from `cats`, some more specific like *json* serialization from `circe`. A good 
+practice is to *put them as close to the call site as possible*. For example:
+
+```scala
+// /core/model/ProductDetail.scala
+
+final case class ProductDetail(id: Int, label: String, description: String)
+
+object ProductDetail {
+  implicit val productDetailEncoder= deriveEncoder
+}
+```
+
+call site:
+
+```scala
+// /access/rest/product/detail/Routes.scala
+
+object Routes {
+  def getProductDetailRoute(id: Id): IO[Response] = {
+    Response.OK(getProductDetail(id).asJson)
+  }
+}
+```
+
+In the code above `ProductDetail` companion object has *json* `Decoder` even though 
+its only use is REST API serialization. Since *json* serialization is specific only
+to REST API all `Encoders` and `Decoders` should be moved as close to this site
+as possible into a `JsonSupport` object. Same example with instances as close to 
+call site as possible:
+
+```scala
+// /core/model/ProductDetail.scala
+
+final case class ProductDetail(id: Int, label: String, description: String)
+```
+
+call site:
+
+```scala
+// /access/rest/product/detail/JsonSupport.scala
+
+object JsonSupport {
+  implicit val productDetailEncoder= deriveEncoder
+}
+```
+
+```scala
+// /access/rest/product/detail/Routes.scala
+
+object Routes {
+  def getProductDetailRoute(id: Id): IO[Response] = {
+    Response.OK(getProductDetail(id).asJson)
+  }
+}
+```
+
+It has to following benefits:
+
+- Gives you true control over your instances
+  - Removing no longer needed instances does not lead you all over the codebase
+  - Prevents orphan (unused) instances after cleanup and refactorings
+- During work on call site you have specific instances at one place close to you
+- Makes your definition site clean and compact
+- Gives you a good functional dependency overview just by looking at the directory 
+  and file structure
+
+On the other hand, purely functional abstractions are fine to remain on companion
+objects since their are widely used throughout the codebase and remain alive during
+entire data type lifecycle:
+
+```scala
+import cats.Functor
+
+// ADT isomorphic to Option used for conditional updates of database values
+sealed trait Update[A]
+
+object Update {
+  final case class Update[A](runUpdate: A) extends Update[A]
+  final case class NoOp[A] extends Update[A]
+  
+  trait FunctorUpdate extends Functor[Update] {
+    def map[A, B](fa: Update[A])(f: A => B): Update[B] = fa match {
+      case Update(a) => f(a)
+      case NoOp => NoOp
+    }  
+  }
+  
+  implicit val functorUpdate = new FunctorUpdate {}
+}
+```
