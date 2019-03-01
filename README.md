@@ -51,7 +51,8 @@ contribute.
   - [3.3. SHOULD NOT apply optimizations without profiling](sections/3-architecture.md#33-should-not-apply-optimizations-without-profiling)
   - [3.4. SHOULD be mindful of the garbage collector](sections/3-architecture.md#34-should-be-mindful-of-the-garbage-collector)
   - [3.5. MUST NOT use parameterless ConfigFactory.load() or access a Config object directly](sections/3-architecture.md#35-must-not-use-parameterless-configfactoryload-or-access-a-config-object-directly)
-
+  - [3.6. SHOULD put type-class instances as close to the call site as possible](sections/3-architecture.md#36-should-put-type-class-instances-as-close-to-the-call-site-as-possible)
+  
 - [4. Concurrency and Parallelism](sections/4-concurrency-parallelism.md)
   - [4.1. SHOULD avoid concurrency like the plague it is](sections/4-concurrency-parallelism.md#41-should-avoid-concurrency-like-the-plague-it-is)
   - [4.2. SHOULD use appropriate abstractions only where suitable](sections/4-concurrency-parallelism.md#42-should-use-appropriate-abstractions-only-where-suitable---future-actors-rx)
