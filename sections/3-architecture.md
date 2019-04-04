@@ -366,3 +366,20 @@ primitives (e.g. ints, strings, etc.), so usage of named
 parameters makes the code more resistant to change and less error-prone,
 versus relying on positioning. The style of indentation chosen here makes
 the instantiation look like a `Map` or a JSON object if you want.
+
+### 3.6. Should create error hierarchy
+
+You should have one sealed trait for all custom Errors / Exceptions in your application.
+
+If you use `Future` a lot make it subtype of `Exception` because of `Future.failed(exception: Throwable)`  
+```scala
+sealed trait ApplicationError extends Exception with NoStackTrace
+
+final case class ScreeningForDataCompleted(dataId: ID) extends ApplicationError {
+  override def toString: String = s"Investigation is completed for data $dataId. Restoring data state is not possible."
+}
+
+final case class MissingLogForData(dataId: ID, log: String) extends ApplicationError {
+  override def toString: String = s"There is missing $log log for data $dataId. Restoring data state is not possible."
+}
+```
