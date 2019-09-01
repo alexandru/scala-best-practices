@@ -786,3 +786,23 @@ Example:
 ```scala
 final case class User(name: String, id: Long)
 ```
+
+### 2.22 SHOULD NOT use `scala.App`
+
+`scala.App` is ofter used to denote the entrypoint of the application:
+
+```scala
+object HelloWorldApp extends App {
+  println("hello, world!")
+}
+```
+
+`DelayedInit` one of the mechanisms used to implement `scala.App` [has been deprecated](https://github.com/scala/scala/pull/3563).
+Any variables defined in the object body will be available as fields, unless the `private` access modifier is applied.
+Prefer the simpler alternative of defining a main method:
+
+```scala
+object HelloWorldApp {
+  def main(args: Array[String]): Unit = println("hello, world!")
+}
+```
