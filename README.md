@@ -42,7 +42,7 @@ contribute.
   - [2.17. SHOULD NOT define case classes nested in other classes](sections/2-language-rules.md#217-should-not-define-case-classes-nested-in-other-classes)
   - [2.18. MUST NOT include classes, traits and objects inside package objects](sections/2-language-rules.md#218-must-not-include-classes-traits-and-objects-inside-package-objects)
   - [2.19. SHOULD use head/tail and init/last decomposition only if they can be done in constant time and memory](sections/2-language-rules.md#219-should-use-head-tail-and-init-last-decomposition-only-if-they-can-be-done-in-constant-time-and-memory)
-  - [2.20. MUST NOT use `Seq.head`](sections/2-language-rules.md#210-must-not-use-seqhead)
+  - [2.20. MUST NOT use `Seq.head`](sections/2-language-rules.md#220-must-not-use-seqhead)
   - [2.21. Case classes SHOULD be final](sections/2-language-rules.md#221-case-classes-should-be-final)
 
 - [3. Application Architecture](sections/3-architecture.md)
