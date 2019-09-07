@@ -789,7 +789,7 @@ final case class User(name: String, id: Long)
 
 ### 2.22 SHOULD NOT use `scala.App`
 
-`scala.App` is ofter used to denote the entrypoint of the application:
+`scala.App` is often used to denote the entrypoint of the application:
 
 ```scala
 object HelloWorldApp extends App {
