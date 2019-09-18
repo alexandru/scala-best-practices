@@ -290,7 +290,7 @@ decide to do things, like log the errors, send notifications,
 restarting the guilty component, etc...
 
 As an appeal to authority, it's reasonable to reference
-[Functional Programming with Scala](http://www.manning.com/bjarnason/),
+[Functional Programming In Scala](http://www.manning.com/bjarnason/),
 chapter 4.
 
 ### 2.8. MUST NOT catch Throwable when catching Exceptions
