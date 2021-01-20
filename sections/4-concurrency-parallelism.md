@@ -358,8 +358,8 @@ context of a Play Framework application you need to use a
 [different thread-pool](https://www.playframework.com/documentation/2.5.x/ThreadPools).
 
 Just pass the ExecutionContext around as an implicit parameter. It's
-idiomatic and acceptable this way. Also, implicit parameters should be passed in the second group of parameters to avoid confusing implicit resolution. When passed in the first group, it allows for method calls like ```doSomething()``` that won't compile but most IDEs will show them as valid.
+idiomatic and acceptable this way:
 
 ```scala
-def doSomething()(implicit ec: ExecutionContext): Future[String] = ???
+def doSomething(implicit ec: ExecutionContext): Future[String] = ???
 ```
