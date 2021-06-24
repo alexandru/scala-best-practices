@@ -25,7 +25,7 @@ def action = Action { request =>
 In Scala, a `return` statement inside a nested anonymous function is
 implemented by throwing and catching a `NonLocalReturnException`. It
 says so in the
-[Scala Language Specification, section 6.20](http://www.scala-lang.org/docu/files/ScalaReference.pdf).
+[Scala Language Specification, section 6.20](https://scala-lang.org/files/archive/spec/2.13/spec.pdf).
 
 Besides, `return` is anti structural programming, as functions can be
 described with multiple exit points and if you need `return`, like in
