@@ -220,7 +220,7 @@ to create a second thread-pool / execution context and execute all
 blocking calls on that, leaving the application's thread-pool to deal
 with CPU-bound stuff.
 
-So you could do initialize this second execution context like:
+So you could initialize this second execution context like:
 
 ```scala
 import java.util.concurrent.Executors
