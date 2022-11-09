@@ -1,6 +1,6 @@
 ## 5. Akka Actors
 
-<img src="https://raw.githubusercontent.com/monifu/scala-best-practices/master/assets/scala-logo-256.png"  align="right" width="128" height="128" />
+<img src="../assets/scala-logo-256.png"  align="right" width="128" height="128" />
 
 ### 5.1. SHOULD evolve the state of actors only in response to messages received from the outside
 
