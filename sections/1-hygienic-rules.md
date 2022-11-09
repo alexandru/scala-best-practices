@@ -1,6 +1,6 @@
 ## 1. Hygienic Rules
 
-<img src="https://raw.githubusercontent.com/monifu/scala-best-practices/master/assets/scala-logo-256.png"  align="right" width="128" height="128" />
+<img src="../assets/scala-logo-256.png"  align="right" width="128" height="128" />
 
 These are general purpose hygienic rules that transcend the language
 or platform rules. Programming language is a form of communication,

@@ -1,6 +1,6 @@
 ## 4. Concurrency and Parallelism
 
-<img src="https://raw.githubusercontent.com/monifu/scala-best-practices/master/assets/scala-logo-256.png"  align="right" width="128" height="128" />
+<img src="../assets/scala-logo-256.png"  align="right" width="128" height="128" />
 
 ### 4.1. SHOULD avoid concurrency like the plague it is
 
